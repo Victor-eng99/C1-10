@@ -44,7 +44,7 @@ public class LecturaFichero {
 		
 		String cadena="";
 		
-        while(s.hasNextLine()) {
+        while(s.hasNext()) {
             cadena=cadena+s.next();
         }
         
