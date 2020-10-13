@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import presentacion.GeneradorPNG;
+import presentacion.Informacion;
 
 /* Nombre: LectorJSON
  * Tipo: Clase
@@ -11,6 +12,7 @@ import presentacion.GeneradorPNG;
  */
 public class LectorJSON {
 	GeneradorPNG generadorPNG;
+	Informacion info;
 	
 	/* Nombre: LectorJSON
 	 * Tipo: Metodo
@@ -57,6 +59,9 @@ public class LectorJSON {
 		
 		if(correcto) {
 			generadorPNG.generar(lab); // Enviamos el array a la clase encargadada de crear el archivo PNG
+		} else {
+			info = new Informacion();
+			info.errorJSON();
 		}
 	}
 	
