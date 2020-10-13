@@ -101,11 +101,10 @@ public class GeneradorLaberinto {
 		int contador=0; // Variable que representa un contador ayuda para corroborar el color de las celdas del laberinto
 		
 		laberinto[rand.nextInt(laberinto.length)][rand.nextInt(laberinto[0].length)].setColor(Color.WHITE);
-		laberinto[rand.nextInt(laberinto.length)][rand.nextInt(laberinto[0].length)].setBlanca(true);
 
 		do {
 			siguiente = laberinto[rand.nextInt(laberinto.length)][rand.nextInt(laberinto[0].length)];
-		} while(siguiente.isBlanca()); // Evitamos seleccionar de nuevo la primera celda
+		} while(siguiente.getColor().equals(Color.WHITE)); // Evitamos seleccionar de nuevo la primera celda
 		
 		while(siguiente != null) {
 			contador = 0;
@@ -166,7 +165,6 @@ public class GeneradorLaberinto {
 			if(laberinto[f][c].getColor().equals(Color.WHITE)) {
 				for (Celda celda : camino) {
 					celda.setColor(Color.WHITE);
-					celda.setBlanca(true);
 					if(celda.getDirHastaCelda()>=0) {
 						if(celda.getDirHastaCelda()==0) { // El atributo que indica la direccion que hemos tomado para escoger esa celda nos ayuda a quitar los muros correspondientes
 							laberinto[celda.getFila()][celda.getColumna()].setMuro(2, true);
@@ -241,7 +239,7 @@ public class GeneradorLaberinto {
 		Celda siguiente;
 		do {
 			siguiente = laberinto[rand.nextInt(laberinto.length)][rand.nextInt(laberinto[0].length)];
-		} while(siguiente.isBlanca());
+		} while(siguiente.getColor().equals(Color.WHITE));
 		return siguiente;
 	}
 	

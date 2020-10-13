@@ -24,8 +24,6 @@ public class Celda {
 	
 	private int maxVecinos;
 	
-	boolean blanca;
-	
 	private int valor;
 	
 	/* Nombre: Celda
@@ -42,7 +40,6 @@ public class Celda {
 			muros[i] = false;
 		}
 		dirHastaCelda=-1;
-		blanca = false;
 		maxVecinos=4;
 		valor = 0;
 	}
@@ -89,14 +86,6 @@ public class Celda {
 
 	public void setDirHastaCelda(int dirHastaCelda) {
 		this.dirHastaCelda = dirHastaCelda;
-	}
-
-	public boolean isBlanca() {
-		return blanca;
-	}
-
-	public void setBlanca(boolean blanca) {
-		this.blanca = blanca;
 	}
 
 	public int getMaxVecinos() {
