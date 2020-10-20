@@ -18,7 +18,7 @@ public class GeneradorLaberinto {
 	GeneradorFrame generadorFrame;
 	GeneradorJSON generadorJSON;
 	int[] direccion = {0, 1, 2, 3}; // Vector que representa cada direccion. 0 = N, 1 = E, 2 = S, 3 = O
-	private static final int TEMPORALIDAD = 60;
+	private static final int TEMPORALIDAD = 10;
 
 	public GeneradorLaberinto() {
 		// Vacio
