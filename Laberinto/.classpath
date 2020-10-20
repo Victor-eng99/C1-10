@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Mario/Desktop/C1-10/Laberinto/jar/json-20200518.jar"/>
+	<classpathentry kind="lib" path="C:/Users/victo/git/C1-10/Laberinto/jar/json-20200518.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
