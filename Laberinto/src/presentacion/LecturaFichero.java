@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import dominio.LectorJSON;
 import dominio.LectorJSONIOM;
 
+
 /* Nombre: LecturaFichero
  * Tipo: Clase
  * Funcion: Leer fichero externo
@@ -30,40 +31,22 @@ public class LecturaFichero {
 	
 	public void obtener(int token) throws IOException {
 		JSONObject objetoCompleto = null;
-		lectorJSON= new LectorJSON();
+		lectorJSON= new LectorJSON();		
+		
+		Scanner s = pedirNombreFichero();		
+		String cadena="";
+		
+        while(s.hasNext()) {
+            cadena=cadena+s.next();
+        }       
+        s.close();		
+		objetoCompleto = new JSONObject(cadena);
 		
 		// token = 0 (Entrega 1 (puzzle_NxM.json)), token = 1 (Entrega 2 (problema.json))
-		if(token==0) {
-			Scanner s = pedirNombreFichero();
-			
-			String cadena="";
-			
-	        while(s.hasNext()) {
-	            cadena=cadena+s.next();
-	        }
-	        
-	        s.close();
-			
-			objetoCompleto = new JSONObject(cadena);
+		if(token==0) {		
 			// Enviamos el objeto JSON a la clase encargada de crear el array que representa el laberinto
-			lectorJSON.leer(objetoCompleto); 
-	
-		}
-		else {
-			lectorJSONIOM= new LectorJSONIOM();
-			
-			Scanner s = pedirNombreFichero();
-			
-			String cadena="";
-			
-	        while(s.hasNext()) {
-	            cadena=cadena+s.next();
-	        }
-	        
-	        s.close();
-	        
-	        objetoCompleto = new JSONObject(cadena);
-	       
+			lectorJSON.leer(objetoCompleto); 	
+		}else {	        
 			lectorJSONIOM.leer(objetoCompleto);
 		}
 	}
