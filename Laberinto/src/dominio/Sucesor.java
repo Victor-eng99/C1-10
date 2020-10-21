@@ -9,17 +9,17 @@ package dominio;
 public class Sucesor {
 	
 	private String mov;
-	private int[] estado;
+	private Celda c1;
 	private int costo_mov;
 	
 	/* Nombre: Camino
 	 * Tipo: Metodo
 	 * Funcion: Constructor de clase Camino
 	 */
-	public Sucesor(String mov, int[] estado, int costo_mov) {
+	public Sucesor(String mov, Celda c1, int costo_mov) {
 		super();
 		this.mov = mov;
-		this.estado = estado;
+		this.c1 = c1;
 		this.costo_mov = costo_mov;
 	}
 
@@ -32,12 +32,13 @@ public class Sucesor {
 		this.mov = mov;
 	}
 
-	public int[] getEstado() {
-		return estado;
+	public Celda getC1() {
+		return c1;
 	}
 
-	public void setEstado(int[] estado) {
-		this.estado = estado;
+
+	public void setC1(Celda c1) {
+		this.c1 = c1;
 	}
 
 	public int getCosto_mov() {
