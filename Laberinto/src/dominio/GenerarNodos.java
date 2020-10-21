@@ -12,7 +12,8 @@ public class GenerarNodos {
 		Celda inicial=new Celda(0,0);
 		boolean objetivo=false;
 		Celda siguiente;
-		Sucesor s1;		
+		Sucesor s1;	
+		ArrayList<Sucesor> sucesores=new ArrayList<Sucesor>();
 		ArrayList<Nodo> frontera= new ArrayList<Nodo>();
 		boolean [] muros= new boolean[4];
 		
@@ -30,23 +31,24 @@ public class GenerarNodos {
 				frontera.add(n);
 			}
 			if(muros[1]) {
-				siguiente=new Celda(inicial.getFila(),inicial.getColumna()+1);
-				s1=new Sucesor("E",siguiente,1);
+				//siguiente=new Celda(inicial.getFila(),inicial.getColumna()+1);
+				//s1=new Sucesor("E",siguiente,1);
 				n=new Nodo(id+1,costo+1, id-1,id-1,"E",profundidad,5,profundidad);
 				frontera.add(n);
 			}
 			if(muros[2]) {
-				siguiente=new Celda(inicial.getFila()-1,inicial.getColumna()+1);
-				s1=new Sucesor("S",siguiente,1);
+				//siguiente=new Celda(inicial.getFila()-1,inicial.getColumna()+1);
+				//s1=new Sucesor("S",siguiente,1);
 				n=new Nodo(id+1,costo+1, id-1,id-1,"S",profundidad,5,profundidad);
 				frontera.add(n);
 			}
 			if(muros[3]) {
-				siguiente=new Celda(inicial.getFila(),inicial.getColumna()-1);
-				s1=new Sucesor("O",siguiente,1);
+				//siguiente=new Celda(inicial.getFila(),inicial.getColumna()-1);
+				//s1=new Sucesor("O",siguiente,1);
 				n=new Nodo(id+1,costo+1, id-1,id-1,"O",profundidad,5,profundidad);
 				frontera.add(n);
 			}
+			
 			Collections.sort(frontera,new ordenarFrontera());
 			n=frontera.remove(frontera.size());
 			
