@@ -29,9 +29,38 @@ public class LectorJSON {
 	public void leer(JSONObject laberinto) {
 		generadorPNG = new GeneradorPNG();
 		Celda[][] lab;
+		
+		lab = construirLaberinto(laberinto);
+		
+		boolean correcto=comprobarValidez(lab);
+		
+		if(correcto) {
+			generadorPNG.generar(lab); // Enviamos el array a la clase encargadada de crear el archivo PNG
+		} else {
+			info = new Informacion();
+			info.errorJSON();
+		}
+	}
+	
+	public void leerMazeArbol(String initial, String objective, JSONObject laberinto) {
+		Celda[][] lab;
+		
+		lab = construirLaberinto(laberinto);
+		
+		boolean correcto=comprobarValidez(lab);
+		
+		if(correcto) {
+			// COMIENZA LA OBTENCIÓN DE NODOS
+		} else {
+			info = new Informacion();
+			info.errorJSON();
+		}
+	}
+	
+	public Celda[][] construirLaberinto(JSONObject laberinto) {
 		Celda c;
 		
-		lab = new Celda[laberinto.getInt("rows")][laberinto.getInt("cols")];
+		Celda[][] lab = new Celda[laberinto.getInt("rows")][laberinto.getInt("cols")];
 		
 		JSONObject celdas = laberinto.getJSONObject("cells");
 		
@@ -55,14 +84,7 @@ public class LectorJSON {
 			
 		}
 		
-		boolean correcto=comprobarValidez(lab);
-		
-		if(correcto) {
-			generadorPNG.generar(lab); // Enviamos el array a la clase encargadada de crear el archivo PNG
-		} else {
-			info = new Informacion();
-			info.errorJSON();
-		}
+		return lab;
 	}
 	
 	/* Nombre: comprobarValidez

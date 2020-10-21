@@ -30,6 +30,7 @@ public class InterfazPrincipal {
 			System.out.println("\nMenú:");
 			System.out.println("1. Generar laberinto a partir de parámetros. ");
 			System.out.println("2. Leer fichero JSON y generar laberinto. ");
+			System.out.println("3. Leer fichero JSON y generar nodos + frontera. ");
 			System.out.println("0. Salir");
 			System.out.println("\nSeleccione una opción: ");
 			try {
@@ -38,7 +39,7 @@ public class InterfazPrincipal {
 				System.err.println("Introduzca un valor numérico entre 0 y 2");
 				teclado.next();
 			}
-		} while(opcion>2 || opcion<0);
+		} while(opcion>3 || opcion<0);
 		
 		return opcion;
 	}
@@ -50,7 +51,11 @@ public class InterfazPrincipal {
 		}
 		else if(opcion==2) {
 			lecturaFichero = new LecturaFichero();
-			lecturaFichero.obtener();
+			lecturaFichero.obtener(0);
+		}
+		else if(opcion==3) {
+			lecturaFichero = new LecturaFichero();
+			lecturaFichero.obtener(1);
 		}
 		else {
 			System.out.println("\nHasta pronto");
