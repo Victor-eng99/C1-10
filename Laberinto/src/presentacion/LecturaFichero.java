@@ -51,34 +51,6 @@ public class LecturaFichero {
 		}
 	}
 	
-	/* Nombre: obtenerMazeArbol
-	 * Tipo: Método
-	 * Función: Obtener el objeto JSON que representa el laberinto gracias al parámetro maze (nombreFichero.json)
-	 */
-	public void obtenerMazeArbol(String initial, String objective, String maze) {
-		lectorJSON= new LectorJSON();
-		Scanner s = null;
-		
-		try {
-			s = new Scanner(new File(maze));
-		} catch (FileNotFoundException e) {
-			System.err.println("No se encontró el archivo especificado");
-		}
-		
-		String cadena="";
-		
-		while(s.hasNext()) {
-            cadena=cadena+s.next();
-        }
-        
-        s.close();
-		
-		JSONObject objetoCompleto = new JSONObject(cadena);		
-		
-		// Enviamos el objeto JSON a la clase encargada de crear el array que representa el laberinto (+ EI y EO)
-		lectorJSON.leerMazeArbol(initial, objective, objetoCompleto); 
-	}
-	
 	public Scanner pedirNombreFichero() {
 		Scanner s = null;
 		int ok=0;

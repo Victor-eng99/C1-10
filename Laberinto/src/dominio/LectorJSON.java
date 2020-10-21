@@ -44,13 +44,14 @@ public class LectorJSON {
 	
 	public void leerMazeArbol(String initial, String objective, JSONObject laberinto) {
 		Celda[][] lab;
-		
+		GenerarNodos generarNodos;
+		generarNodos = new GenerarNodos();
 		lab = construirLaberinto(laberinto);
 		
 		boolean correcto=comprobarValidez(lab);
 		
 		if(correcto) {
-			// COMIENZA LA OBTENCIÓN DE NODOS
+			generarNodos.generar(initial,objective,laberinto);			
 		} else {
 			info = new Informacion();
 			info.errorJSON();
