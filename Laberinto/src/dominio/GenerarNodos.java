@@ -6,53 +6,37 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+/* Nombre: GeneradorNodos
+ * Tipo: Clase
+ * Funcion: Clase encargada de generar nodos aleatorios y añadirlos a la frontera
+ */
 public class GenerarNodos {
 	
-	public void anchura(String initial, String objective, JSONObject laberinto ) {
-		Celda inicial=new Celda(0,0);
-		boolean objetivo=false;
-		Celda siguiente;
-		Sucesor s1;	
-		ArrayList<Sucesor> sucesores=new ArrayList<Sucesor>();
-		ArrayList<Nodo> frontera= new ArrayList<Nodo>();
-		boolean [] muros= new boolean[4];
-		
+	
+	/* Nombre: nodosAleatorios
+	 * Tipo: Metodo
+	 * Funcion: Crear 10 nodos aleatorios
+	 */
+	public void nodosAleatorios(String initial, String objective, JSONObject laberinto ) {
 		Nodo n;
-		int id=-1;
-		int costo=0;
-		int profundidad=0;
+		Random rand= new Random();
+		ArrayList<Nodo> frontera= new ArrayList<Nodo>();
 		
-		do {
-			muros=inicial.getMuros();
-			if(muros[0]) {
-				siguiente= new Celda(inicial.getFila()-1,inicial.getColumna());
-				s1=new Sucesor("N",siguiente,1);
-				n= new Nodo(id+1, costo+1, id-1,id-1,"N",profundidad,5,profundidad);	
-				frontera.add(n);
-			}
-			if(muros[1]) {
-				//siguiente=new Celda(inicial.getFila(),inicial.getColumna()+1);
-				//s1=new Sucesor("E",siguiente,1);
-				n=new Nodo(id+1,costo+1, id-1,id-1,"E",profundidad,5,profundidad);
-				frontera.add(n);
-			}
-			if(muros[2]) {
-				//siguiente=new Celda(inicial.getFila()-1,inicial.getColumna()+1);
-				//s1=new Sucesor("S",siguiente,1);
-				n=new Nodo(id+1,costo+1, id-1,id-1,"S",profundidad,5,profundidad);
-				frontera.add(n);
-			}
-			if(muros[3]) {
-				//siguiente=new Celda(inicial.getFila(),inicial.getColumna()-1);
-				//s1=new Sucesor("O",siguiente,1);
-				n=new Nodo(id+1,costo+1, id-1,id-1,"O",profundidad,5,profundidad);
-				frontera.add(n);
-			}
-			
-			Collections.sort(frontera,new ordenarFrontera());
-			n=frontera.remove(frontera.size());
-			
-		}while(!objetivo);
+		//Definimos las 4 direcciones para luego añadirlo de forma aleatoria a cada nodo
+		String[] direcciones= new String[4];
+		direcciones[0]="N";   direcciones[1]="E";   direcciones[2]="S";   direcciones[3]="O";
+		int direccion=0;
+		int costo=0;
+		
+		//Creamos 10 nodos aleatorios y lo añadimos a la frontera
+		for(int i=0;i<10;i++) {
+		    direccion=rand.nextInt(4);
+			n= new Nodo(i+1, costo+1, i-1,i-1,direcciones[direccion],i,5,i);
+			frontera.add(n);
+		}	
+		
+		//Ordenamos la frontera segun el campor "valor" de los nodos
+		Collections.sort(frontera,new ordenarFrontera());
 		
 	}
 
