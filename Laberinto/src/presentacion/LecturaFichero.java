@@ -31,7 +31,8 @@ public class LecturaFichero {
 	
 	public void obtener(int token) throws IOException {
 		JSONObject objetoCompleto = null;
-		lectorJSON= new LectorJSON();		
+		lectorJSON= new LectorJSON();	
+		lectorJSONIOM = new LectorJSONIOM();
 		
 		Scanner s = pedirNombreFichero();		
 		String cadena="";
@@ -40,6 +41,7 @@ public class LecturaFichero {
             cadena=cadena+s.next();
         }       
         s.close();		
+
 		objetoCompleto = new JSONObject(cadena);
 		
 		// token = 0 (Entrega 1 (puzzle_NxM.json)), token = 1 (Entrega 2 (problema.json))

@@ -26,6 +26,8 @@ public class Celda {
 	
 	private int valor;
 	
+	private Sucesor[] sucesores = new Sucesor[4];
+	
 	/* Nombre: Celda
 	 * Tipo: Metodo
 	 * Funcion: Constructor de clase Celda
@@ -42,6 +44,9 @@ public class Celda {
 		dirHastaCelda=-1;
 		maxVecinos=4;
 		valor = 0;
+		for(int i=0; i < sucesores.length; i++) {
+			sucesores[i] = null;
+		}
 	}
 
 	public int getPosX() {
@@ -103,5 +108,19 @@ public class Celda {
 	public void setValor(int valor) {
 		this.valor = valor;
 	}
+
+	public Sucesor getSucesor(int index) {
+		return sucesores[index];
+	}
+	
+	public Sucesor[] getSucesores() {
+		return sucesores;
+	}
+
+	public void setSucesores(int index, Sucesor sucesor) {
+		this.sucesores[index] = sucesor;
+	}
+	
+	
 	
 }

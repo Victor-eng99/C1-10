@@ -22,7 +22,7 @@ public class LectorJSON {
 		// Vacio
 	}
 	
-	/* Nombre: leerInterno
+	/* Nombre: leer
 	 * Tipo: Metodo
 	 * Funcion: Generacion del array que representa el laberinto a partir de un objeto JSON
 	 */
@@ -51,7 +51,7 @@ public class LectorJSON {
 		boolean correcto=comprobarValidez(lab);
 		
 		if(correcto) {
-			generarNodos.nodosAleatorios(initial, objective, laberinto);			
+			generarNodos.nodosAleatorios(initial, objective, lab);			
 		} else {
 			info = new Informacion();
 			info.errorJSON();

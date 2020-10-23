@@ -8,7 +8,7 @@ package dominio;
 
 public class Nodo {
 	private int id;
-	private int estado;
+	private String estado;
 	private int valor;
 	private int costo;
 	private String accion;
@@ -21,8 +21,7 @@ public class Nodo {
 	 * Tipo: Metodo
 	 * Funcion: Constructor de clase Nodo
 	 */
-	public Nodo(int id, int estado, int valor, int costo, String accion, int idPadre, int profundidad, int heuristica) {
-		super();
+	public Nodo(int id, int costo, String estado, int idPadre, String accion, int profundidad, int heuristica, int valor) {
 		this.id = id;
 		this.estado = estado;
 		this.valor = valor;
@@ -42,11 +41,11 @@ public class Nodo {
 		this.id = id;
 	}
 
-	public int getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(int estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 
@@ -97,6 +96,10 @@ public class Nodo {
 	public void setHeuristica(int heuristica) {
 		this.heuristica = heuristica;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "["+this.id+"]["+this.costo+","+this.estado+","+this.idPadre+","+this.accion+","+this.profundidad+","+this.heuristica+","+this.valor+"]";
+	}
 
 }

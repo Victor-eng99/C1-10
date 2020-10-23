@@ -8,37 +8,20 @@ import java.util.ArrayList;
  */
 public class Frontera {
 
-	private int fila;
-	private int columna;
+	ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	
-	
-	public Frontera(int fila, int columna) {
-		super();
-		this.fila = fila;
-		this.columna = columna;
+	public Frontera() {
+		// Vacío
 	}
 	
-	public void Insertar(ArrayList<Nodo> frontera,Nodo n1) {
-		frontera.add(n1);
+	public void offer(Nodo n) {
+		frontera.add(n);
 	}
 	
-	public void Eliminar(ArrayList<Nodo> frontera,Nodo n1) {
-		frontera.remove(n1);
+	public Nodo poll() {
+		Nodo n = frontera.get(0);
+		frontera.remove(0);
+		return n;
 	}
-	
-	
-	public int getFila() {
-		return fila;
-	}
-	public void setFila(int fila) {
-		this.fila = fila;
-	}
-	public int getColumna() {
-		return columna;
-	}
-	public void setColumna(int columna) {
-		this.columna = columna;
-	}
-	
 	
 }
