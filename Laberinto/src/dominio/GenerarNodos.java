@@ -35,25 +35,22 @@ public class GenerarNodos {
 			}
 		}
 		
-		generarNodos(id, profundidad, laberinto, frontera);
-		
-		System.exit(0);
+		generarNodos(id, laberinto, frontera);
 		
 	}
 	
 	/* Nombre: generarNodos
 	 * Tipo: Método
-	 * Función: Generar nodos a partir de estados sucesores (simplemente generar, idPadre y profundidad son 0 para esta entrega)
+	 * Función: Generar nodos a partir de estados sucesores (Simplemente generar. idPadre y profundidad son 0 para esta entrega aunque no sea verdad)
 	 */
-	public void generarNodos(int id, int profundidad, Celda[][] laberinto, Frontera frontera) {
+	public void generarNodos(int id, Celda[][] laberinto, Frontera frontera) {
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
 				for(int s=0; s<laberinto[f][c].getSucesores().length; s++) { // Array de sucesores de cada estado. Cada nodo que los contenga debe tener la misma profundidad
 					if(laberinto[f][c].getSucesor(s)!=null) {
-						int idPadre=0;
 						id++;
 						String estado = "("+laberinto[f][c].getSucesor(s).getCelda().getFila()+","+laberinto[f][c].getSucesor(s).getCelda().getColumna()+")";
-						Nodo n = new Nodo(id, 1, estado, idPadre, laberinto[f][c].getSucesor(s).getMov(), profundidad, 10, laberinto[f][c].getSucesor(s).getCelda().getValor());
+						Nodo n = new Nodo(id, 1, estado, 0, laberinto[f][c].getSucesor(s).getMov(), 0, 10, laberinto[f][c].getSucesor(s).getCelda().getValor());
 						frontera.offer(n);
 						System.out.println("\nInsertado nodo: "+ n.toString());
 					}
