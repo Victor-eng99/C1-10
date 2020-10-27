@@ -8,7 +8,7 @@ package dominio;
 
 public class Nodo {
 	private int id;
-	private String estado;
+	private Celda estado;
 	private int valor;
 	private int costo;
 	private String accion;
@@ -21,7 +21,7 @@ public class Nodo {
 	 * Tipo: Metodo
 	 * Funcion: Constructor de clase Nodo
 	 */
-	public Nodo(int id, int costo, String estado, int idPadre, String accion, int profundidad, int heuristica, int valor) {
+	public Nodo(int id, int costo, Celda estado, int idPadre, String accion, int profundidad, int heuristica, int valor) {
 		this.id = id;
 		this.estado = estado;
 		this.valor = valor;
@@ -41,11 +41,11 @@ public class Nodo {
 		this.id = id;
 	}
 
-	public String getEstado() {
+	public Celda getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(Celda estado) {
 		this.estado = estado;
 	}
 
@@ -99,7 +99,7 @@ public class Nodo {
 	
 	@Override
 	public String toString() {
-		return "["+this.id+"]["+this.costo+","+this.estado+","+this.idPadre+","+this.accion+","+this.profundidad+","+this.heuristica+","+this.valor+"]";
+		return "["+this.id+"]["+this.costo+",("+this.estado.getFila()+","+this.estado.getColumna()+"),"+this.idPadre+","+this.accion+","+this.profundidad+","+this.heuristica+","+this.valor+"]";
 	}
 
 }

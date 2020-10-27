@@ -51,7 +51,7 @@ public class LectorJSON {
 		boolean correcto=comprobarValidez(lab);
 		
 		if(correcto) {
-			generarNodos.nodosAleatorios(initial, objective, lab);			
+			generarNodos.nodos(initial, objective, lab);			
 		} else {
 			info = new Informacion();
 			info.errorJSON();

@@ -28,6 +28,8 @@ public class Celda {
 	
 	private Sucesor[] sucesores = new Sucesor[4];
 	
+	int idNodo;
+	
 	/* Nombre: Celda
 	 * Tipo: Metodo
 	 * Funcion: Constructor de clase Celda
@@ -120,7 +122,14 @@ public class Celda {
 	public void setSucesores(int index, Sucesor sucesor) {
 		this.sucesores[index] = sucesor;
 	}
-	
+
+	public int getIdNodo() {
+		return idNodo;
+	}
+
+	public void setIdNodo(int idNodo) {
+		this.idNodo = idNodo;
+	}
 	
 	
 }
