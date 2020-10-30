@@ -9,6 +9,7 @@ import java.util.Random;
 public class GenerarNodos {
 	
 	Frontera frontera = new Frontera();
+	final int nodos=10000000;
 	
 	/* Nombre: nodosAleatorios
 	 * Tipo: Metodo
@@ -27,7 +28,7 @@ public class GenerarNodos {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
 					Random rand = new Random();
-					int fn= rand.nextInt(100001)+1;
+					int fn= rand.nextInt(10000001)+1;
 					Nodo n = new Nodo(id, costo, laberinto[f][c], -1, "-", profundidad, 10, fn);
 					frontera.offer(n);
 					laberinto[f][c].setIdNodo(id);
@@ -43,16 +44,37 @@ public class GenerarNodos {
 	/* Nombre: expandir
 	 * Tipo: Método
 	 * Función: Expansión de nodos
+	 * ***NOTA: Al no contar con una estrategia en esta entrega, se usará el método para insertar el mismo nodo "x" (nodos) veces,
+	 * de forma que podamos someter a la frontera a un test de estrés y medir tiempos.
 	 */
 	public void expandir(Nodo padre, String objective, Celda[][] laberinto) {
+		int id=padre.getId();
+		int costo=padre.getCosto();
+		int profundidad=padre.getProfundidad();
+		
+		long tiempoInicial=System.currentTimeMillis();
+		for(int i=0; i<nodos; i++) {
+			Random rand = new Random();
+			int fn= rand.nextInt(10000001)+1;
+			Nodo n = new Nodo(++id, costo, padre.getEstado(), -1, "-", profundidad, 10, fn);
+			System.out.println(n.toString());
+			frontera.offer(n);
+		}
+		long tiempoFinal=System.currentTimeMillis();
+		
+		long total = tiempoFinal-tiempoInicial;
+		System.out.println("\nTiempo en insertar " + nodos + " nodos: " + total/1000 + " segundos");
+		/*
 		frontera.poll();
+		padre.getEstado().setExpandida(true);
 		for(int s=0; s<padre.getEstado().getSucesores().length; s++) {
 			if(padre.getEstado().getSucesor(s)!=null) {
 				Random rand = new Random();
 				int fn = rand.nextInt(100001)+1;
-				// GENERAR NODOS E INSERTAR EN FRONTERA (DE FORMA PREPARATORIA, SIN ESTRATEGIA)
+				
 			}
 		}
+		*/
 		
 	}
 	
