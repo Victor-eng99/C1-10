@@ -42,7 +42,7 @@ public class LectorJSON {
 		}
 	}
 	
-	public void leerMazeArbol(String initial, String objective, JSONObject laberinto) {
+	public void leerMazeArbol(String initial, String objective, JSONObject laberinto,int opcion) {
 		Celda[][] lab;
 		GenerarNodos generarNodos;
 		generarNodos = new GenerarNodos();
@@ -51,7 +51,7 @@ public class LectorJSON {
 		boolean correcto=comprobarValidez(lab);
 		
 		if(correcto) {
-			generarNodos.nodos(initial, objective, lab);			
+			generarNodos.nodos(initial, objective, lab,opcion);			
 		} else {
 			info = new Informacion();
 			info.errorJSON();

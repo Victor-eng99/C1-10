@@ -26,11 +26,11 @@ public class LectorJSONIOM {
 	 * Tipo: Método
 	 * Función: Leer el ficher JSON que contiene EI, EO y nombre de archivo JSON que contiene el laberinto
 	 */
-	public void leer(JSONObject jsoniom) {
+	public void leer(JSONObject jsoniom,int opcion) {
 		LectorJSON lectorJSON= new LectorJSON();
 		
 		String initial = jsoniom.getString("INITIAL");
-		String objective = jsoniom.getString("OBJECTIVE");
+		String objective = jsoniom.getString("OBJETIVE");
 		String maze = jsoniom.getString("MAZE");
 		
 		Scanner s = null;		
@@ -47,6 +47,6 @@ public class LectorJSONIOM {
 		JSONObject objetoCompleto = new JSONObject(cadena);		
 		
 		// Enviamos el objeto JSON a la clase encargada de crear el array que representa el laberinto (+ EI y EO)
-		lectorJSON.leerMazeArbol(initial, objective, objetoCompleto); 
+		lectorJSON.leerMazeArbol(initial, objective, objetoCompleto,opcion); 
 	}
 }

@@ -9,26 +9,25 @@ import java.util.Random;
 public class GenerarNodos {
 	
 	Frontera frontera = new Frontera();
-	final int nodos=10000000;
+	final int nodos=1000;
 	
 	/* Nombre: nodosAleatorios
 	 * Tipo: Metodo
 	 * Funcion: Crear nodos 
 	 */
-	public void nodos(String initial, String objective, Celda[][] laberinto ) {
+	public void nodos(String initial, String objective, Celda[][] laberinto,int opcion ) {
 		int id=0;
 		int profundidad=0;
 		int costo=0;
 		
 		generarSucesores(laberinto);
-		
 		// Comenzamos a generar a partir del estado inicial
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
 					Random rand = new Random();
-					int fn= rand.nextInt(10000001)+1;
+					int fn= rand.nextInt(1001)+1;
 					Nodo n = new Nodo(id, costo, laberinto[f][c], -1, "-", profundidad, 10, fn);
 					frontera.offer(n);
 					laberinto[f][c].setIdNodo(id);
@@ -47,6 +46,13 @@ public class GenerarNodos {
 	 * ***NOTA: Al no contar con una estrategia en esta entrega, se usará el método para insertar el mismo nodo "x" (nodos) veces,
 	 * de forma que podamos someter a la frontera a un test de estrés y medir tiempos.
 	 */
+	
+	public void anchura(Nodo padre,String objetive,Celda[][] laberinto) {
+		
+		
+		
+	}
+	
 	public void expandir(Nodo padre, String objective, Celda[][] laberinto) {
 		int id=padre.getId();
 		int costo=padre.getCosto();
@@ -55,7 +61,7 @@ public class GenerarNodos {
 		long tiempoInicial=System.currentTimeMillis();
 		for(int i=0; i<nodos; i++) {
 			Random rand = new Random();
-			int fn= rand.nextInt(10000001)+1;
+			int fn= rand.nextInt(1001)+1;
 			Nodo n = new Nodo(++id, costo, padre.getEstado(), -1, "-", profundidad, 10, fn);
 			System.out.println(n.toString());
 			frontera.offer(n);

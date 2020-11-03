@@ -29,7 +29,7 @@ public class LecturaFichero {
 		// Vacio
 	}
 	
-	public void obtener(int token) throws IOException {
+	public void obtener(int token,int opcion) throws IOException {
 		JSONObject objetoCompleto = null;
 		lectorJSON= new LectorJSON();	
 		lectorJSONIOM = new LectorJSONIOM();
@@ -49,7 +49,7 @@ public class LecturaFichero {
 			// Enviamos el objeto JSON a la clase encargada de crear el array que representa el laberinto
 			lectorJSON.leer(objetoCompleto); 	
 		}else {	        
-			lectorJSONIOM.leer(objetoCompleto);
+			lectorJSONIOM.leer(objetoCompleto,opcion);
 		}
 	}
 	
