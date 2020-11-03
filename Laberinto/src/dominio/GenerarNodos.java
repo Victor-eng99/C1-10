@@ -103,17 +103,17 @@ public class GenerarNodos {
 				System.out.println(sucesor.toString());
 				celda.setSucesores(0, sucesor);
 			}
-			else if(celda.getMuro(m)==true && m==1) {
+			if(celda.getMuro(m)==true && m==1) {
 				Sucesor sucesor = new Sucesor("E",laberinto[celda.getFila()][celda.getColumna()+1], 1);
 				System.out.println(sucesor.toString());
 				celda.setSucesores(1, sucesor);
 			}
-			else if(celda.getMuro(m)==true && m==2) {
+			if(celda.getMuro(m)==true && m==2) {
 				Sucesor sucesor = new Sucesor("S",laberinto[celda.getFila()+1][celda.getColumna()], 1);
 				System.out.println(sucesor.toString());
 				celda.setSucesores(2, sucesor);
 			}
-			else if(celda.getMuro(m)==true && m==3) {
+			if(celda.getMuro(m)==true && m==3) {
 				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], 1);
 				System.out.println(sucesor.toString());
 				celda.setSucesores(3, sucesor);
