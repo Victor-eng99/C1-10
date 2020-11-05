@@ -1,6 +1,9 @@
 package dominio;
 
+import java.util.ArrayList;
 import java.util.Random;
+
+import presentacion.InterfazPrincipal;
 
 /* Nombre: GeneradorNodos
  * Tipo: Clase
@@ -15,92 +18,118 @@ public class GenerarNodos {
 	 * Tipo: Metodo
 	 * Funcion: Crear nodos 
 	 */
-	public void nodos(String initial, String objective, Celda[][] laberinto,int opcion ) {
+	public void nodos(String initial, String objective, Celda[][] laberinto,int opcion) {	
 		int id=0;
 		int profundidad=0;
 		int costo=0;
+		Nodo n= new Nodo(id, costo, laberinto[0][0], -1, "-", profundidad, 10, profundidad);
 		
-		generarSucesores(laberinto);
-		// Comenzamos a generar a partir del estado inicial
+		// Buscamos el nodo inicial
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
 					Random rand = new Random();
 					int fn= rand.nextInt(1001)+1;
-					Nodo n = new Nodo(id, costo, laberinto[f][c], -1, "-", profundidad, 10, fn);
+				    n = new Nodo(id, costo, laberinto[f][c], -1, "-", profundidad, 10, profundidad);
 					frontera.offer(n);
 					laberinto[f][c].setIdNodo(id);
-					System.out.println("\nGENERANDO NODOS...");
-					System.out.println(n.toString());
-					expandir(n, objective, laberinto);
+					//expandir(n, objective, laberinto);
 				}
 			}
 		}
-		
+		//Elegimos el tipo de busqueda seleccionada al principio
+		if(opcion==0) {
+			anchura2(n,objective,laberinto);
+		}/*else if(opcion==1) {
+			aAsterisco(initial,objective,laberinto);
+		}else if(opcion==2){
+			profundidad(initial,objective,laberinto);
+		}else if(opcion==3){
+			costeUniforme(initial,objective,laberinto);
+		}*/
 	}
 	
 	/* Nombre: expandir
 	 * Tipo: Método
 	 * Función: Expansión de nodos
-	 * ***NOTA: Al no contar con una estrategia en esta entrega, se usará el método para insertar el mismo nodo "x" (nodos) veces,
-	 * de forma que podamos someter a la frontera a un test de estrés y medir tiempos.
 	 */
-	
 	public void anchura(Nodo padre,String objetive,Celda[][] laberinto) {
-		
-		
-		
-	}
-	
-	public void expandir(Nodo padre, String objective, Celda[][] laberinto) {
+		ArrayList<Nodo> visitados=new ArrayList<Nodo>();
 		int id=padre.getId();
-		int costo=padre.getCosto();
-		int profundidad=padre.getProfundidad();
+		int costo=padre.getCosto()+1;
+		int profundidad=padre.getProfundidad()+1;
 		
-		long tiempoInicial=System.currentTimeMillis();
-		for(int i=0; i<nodos; i++) {
-			Random rand = new Random();
-			int fn= rand.nextInt(1001)+1;
-			Nodo n = new Nodo(++id, costo, padre.getEstado(), -1, "-", profundidad, 10, fn);
+		visitados.add(frontera.poll());
+		visitados.get(id).getEstado().setExpandida(true);
+		
+		//Comprobamos si hemos llegado al objetivo y volvemos al menu principal
+		String fc="("+visitados.get(visitados.size()-1).getEstado().getFila()+","+visitados.get(visitados.size()-1).getEstado().getColumna()+")";
+		if(objetive.equals(fc)) {
+			System.out.println("Se ha alcanzado el nodo objetivo");
+			System.exit(0);
+		}
+			
+		//Sacamos los sucesores de la celda actual para despues añadirlos a la frontera
+		Celda actual=funcionSucesores(visitados.get(id).getEstado(), laberinto);
+		System.out.println("Longitud "+actual.getSucesores().length);
+		for(int i=actual.getSucesores().length-1;i>0;i--) {
+			Sucesor s1=actual.getSucesor(i);
+			Nodo n = new Nodo(++id,costo, laberinto[s1.getCelda().getFila()][s1.getCelda().getColumna()], -1, "-", profundidad, 10, profundidad);
 			System.out.println(n.toString());
-			frontera.offer(n);
+			//Si el elmento no ha sido añadido antes lo añadimos a la frontera
+			if(!n.getEstado().isExpandida()) frontera.offer(n);			
 		}
-		long tiempoFinal=System.currentTimeMillis();
 		
-		long total = tiempoFinal-tiempoInicial;
-		System.out.println("\nTiempo en insertar " + nodos + " nodos: " + total/1000 + " segundos");
-		/*
-		frontera.poll();
-		padre.getEstado().setExpandida(true);
-		for(int s=0; s<padre.getEstado().getSucesores().length; s++) {
-			if(padre.getEstado().getSucesor(s)!=null) {
-				Random rand = new Random();
-				int fn = rand.nextInt(100001)+1;
-				
-			}
-		}
-		*/
-		
+		anchura(frontera.poll(),objetive,laberinto);	
 	}
 	
-	/* Nombre: generarSucesores
-	 * Tipo: Método
-	 * Función: Llamada iterativa a funcionSucesores
-	 */
-	public void generarSucesores(Celda[][] laberinto) {
-		for(int f=0; f<laberinto.length; f++) {
-			for(int c=0; c<laberinto[0].length; c++) {
-				funcionSucesores(laberinto[f][c], laberinto);
+	
+	
+	public ArrayList<Nodo> anchura2(Nodo padre,String objetive,Celda[][] laberinto) {
+		ArrayList<Nodo> visitados=new ArrayList<Nodo>();
+		ArrayList<Nodo> frontera=new ArrayList<Nodo>();
+		int id=padre.getId();
+		int costo=padre.getCosto()+1;
+		int profundidad=padre.getProfundidad()+1;
+		boolean solucion=false;
+		
+		frontera.add(padre);
+		
+		while(!frontera.isEmpty() && !solucion) {		
+			padre=frontera.remove(0);
+			
+			//Comprobamos si hemos llegado al objetivo y volvemos al menu principal
+			String fc="("+visitados.get(visitados.size()-1).getEstado().getFila()+","+visitados.get(visitados.size()-1).getEstado().getColumna()+")";
+			if(objetive.equals(fc)) {
+				System.out.println("Se ha alcanzado el nodo objetivo");
+				solucion=true;
 			}
+			
+			if(!visitados.contains(padre) && padre.getProfundidad()<profundidad) {
+				visitados.add(padre);
+				Celda actual=funcionSucesores(padre.getEstado(), laberinto);	
+				for(int i=actual.getSucesores().length-1;i>0;i--) {
+					Sucesor s1=actual.getSucesor(i);
+					Nodo n = new Nodo(++id,costo, laberinto[s1.getCelda().getFila()][s1.getCelda().getColumna()], -1, "-", profundidad, 10, profundidad);
+					frontera.add(n);
+				}				
+			}		
 		}
+		if(solucion) {
+			return visitados;
+		}else
+			System.out.println("No hay solucion");
+			
+		return visitados;
 	}
+	
 	
 	/* Nombre: funcionSucesores
 	 * Tipo: Método
 	 * Función: Generar estados sucesores de cada una de los estados (celdas) del laberinto (dependiendo de muros)
 	 */
-	public void funcionSucesores(Celda celda, Celda[][] laberinto) {
+	public Celda funcionSucesores(Celda celda, Celda[][] laberinto) {
 		System.out.println("\nESTADO ("+celda.getFila()+","+celda.getColumna()+")");
 		System.out.println("SUCESORES:");
 		for(int m=0; m<celda.getMuros().length; m++) {
@@ -125,6 +154,7 @@ public class GenerarNodos {
 				celda.setSucesores(3, sucesor);
 			}
 		}
+		return celda;
 	} 
 
 }
