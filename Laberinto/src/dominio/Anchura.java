@@ -47,7 +47,7 @@ public class Anchura {
 		boolean solucion=false;
 		
 		frontera.add(padre);
-		
+		long inicio = System.currentTimeMillis();
 		while(!frontera.isEmpty() && !solucion) {		
 			visitados.add(frontera.remove(0));
 			costo++;
@@ -63,17 +63,38 @@ public class Anchura {
 			for(int i=sucesores-1;i>0;i--) {
 				try {
 				Sucesor s1=actual.getSucesor(i);
-				Nodo n = new Nodo(++id,costo, s1.getCelda(), -1, "-", costo, 10, profundidad);
-				if(!visitados.contains(n)) frontera.add(n);							
+				Nodo n = new Nodo(++id,costo, s1.getCelda(), -1, "-", costo, 10, profundidad);			
+					frontera.add(n);						
 				}catch(NullPointerException e) {}
 			}		
 		}
+		long fin = System.currentTimeMillis();
+        System.out.println("Tiempo de Ejecucion: "+(fin-inicio)+" MiliSegundos");
 		if(solucion) {
 			System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
 		}else
 			System.out.println("\u001B[31mNo hay solucion");
 			
 	}
+	
+	
+	
+	/* Nombre: contiene
+	 * Tipo: Método
+	 * Función: Nos dice si un nodo existe o no en un ArrayList
+	 */
+	public boolean contiene(ArrayList<Nodo> visitados,Nodo n) {
+		boolean encontrado=false;
+		
+		for(int i=visitados.size()-1;i>0;i--) {
+			if(n.getEstado().getFila()==visitados.get(i).getEstado().getFila() && 
+					n.getEstado().getColumna()==visitados.get(i).getEstado().getColumna()) {
+						encontrado=true;
+			}
+		}	
+		return encontrado;
+	}
+	
 	
 	
 	/* Nombre: funcionSucesores

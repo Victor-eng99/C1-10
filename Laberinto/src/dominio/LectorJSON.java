@@ -51,10 +51,11 @@ public class LectorJSON {
 			if(opcion==0) {
 				Anchura anchura=new Anchura();
 				anchura.nodoInicial(initial, objective, lab);
-			}/*
+			}
 			if(opcion==1) {
-				a.nodoInicial(initial, objective, lab,opcion);
-			}if(opcion==2) {
+				AEstrella ae=new AEstrella();
+				ae.nodoInicial(initial, objective, lab);
+			}/*if(opcion==2) {
 				Coste coste=new Coste();
 				coste.nodoInicial(initial, objective, lab,opcion)
 			}if(opcion==3) {
