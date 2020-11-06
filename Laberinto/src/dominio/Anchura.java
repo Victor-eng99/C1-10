@@ -38,7 +38,7 @@ public class Anchura {
 	 * Tipo: Método
 	 * Función: Busqueda en anchura a partir del nodo inicial hasta el objetivo
 	 */
-	public ArrayList<Nodo> anchura(Nodo padre,String objetive,Celda[][] laberinto) {
+	public void anchura(Nodo padre,String objetive,Celda[][] laberinto) {
 		ArrayList<Nodo> visitados=new ArrayList<Nodo>();
 		ArrayList<Nodo> frontera=new ArrayList<Nodo>();
 		int id=padre.getId();
@@ -54,8 +54,7 @@ public class Anchura {
 			profundidad++;
 			//Comprobamos si hemos llegado al objetivo y volvemos al menu principal
 			String fc="("+visitados.get(visitados.size()-1).getEstado().getFila()+","+visitados.get(visitados.size()-1).getEstado().getColumna()+")";
-			if(objetive.equals(fc)) {
-				
+			if(objetive.equals(fc)) {			
 				solucion=true;
 			}
 			
@@ -64,17 +63,16 @@ public class Anchura {
 			for(int i=sucesores-1;i>0;i--) {
 				try {
 				Sucesor s1=actual.getSucesor(i);
-				Nodo n = new Nodo(++id,costo, s1.getCelda(), -1, "-", profundidad, 10, profundidad);
+				Nodo n = new Nodo(++id,costo, s1.getCelda(), -1, "-", costo, 10, profundidad);
 				if(!visitados.contains(n)) frontera.add(n);							
 				}catch(NullPointerException e) {}
 			}		
 		}
 		if(solucion) {
-			System.out.println("\nSe ha alcanzado el nodo objetivo");
+			System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
 		}else
-			System.out.println("No hay solucion");
+			System.out.println("\u001B[31mNo hay solucion");
 			
-		return visitados;
 	}
 	
 	
