@@ -44,6 +44,21 @@ public class GeneradorPNG {
 				g2.setColor(Color.WHITE);
 				g2.fillRect(x, y, Celda.TAMANO, Celda.TAMANO); // Rellena un recangulo con las medidas de la clase Celda
 				
+				//Pintamos cada casilla dependiendo del valor del nodo
+				if(laberinto[i][j].getValor()==0) {
+					g2.setColor(Color.WHITE);
+				}if(laberinto[i][j].getValor()==1) {
+					Color cGris=new Color(241,231,186);
+					g2.setColor(cGris);
+				}if(laberinto[i][j].getValor()==2) {
+					Color cVerde=new Color(147,235,145);
+					g2.setColor(cVerde);
+				}if(laberinto[i][j].getValor()==3) {
+					Color cAzul=new Color(186,224,241);
+					g2.setColor(cAzul);
+				}
+				g2.fillRect (x, y,  Celda.TAMANO,  Celda.TAMANO);
+				
 				g2.setColor(Color.BLACK);
 				if(!laberinto[i][j].getMuro(0)) {
 					g2.drawLine(x, y, x+Celda.TAMANO, y); // Muro superior (N)
