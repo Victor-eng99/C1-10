@@ -1,6 +1,8 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 
 /* Nombre: Frontera
  * Tipo: Clase
@@ -22,6 +24,14 @@ public class Frontera {
 		Nodo n = frontera.get(0);
 		frontera.remove(0);
 		return n;
+	}
+	
+	public boolean isEmpty() {
+		return frontera.isEmpty();
+	}
+	
+	public void ordenar() {
+		Collections.sort(frontera);
 	}
 	
 }
