@@ -49,6 +49,7 @@ public class Costo {
 							Nodo n = new Nodo(++id, s.getCostoMov()+padre.getCosto(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, 10, s.getCostoMov()+padre.getCosto());			
 							frontera.add(n);
 							System.out.println("Insertado nodo " + n.toString());
+							System.out.println("Tamano de frontera = "+frontera.size());
 						} else {
 							System.out.println("CUT en estado ("+s.getCelda().getFila()+","+s.getCelda().getColumna()+")");
 						}
@@ -74,19 +75,19 @@ public class Costo {
 	public void funcionSucesores(Celda celda, Celda[][] laberinto) {
 		for(int m=0; m<celda.getMuros().length; m++) {
 			if(celda.getMuro(m)==true && m==0) {
-				Sucesor sucesor = new Sucesor("N",laberinto[celda.getFila()-1][celda.getColumna()], 1+laberinto[celda.getFila()-1][celda.getColumna()].getValor());
+				Sucesor sucesor = new Sucesor("N",laberinto[celda.getFila()-1][celda.getColumna()], laberinto[celda.getFila()-1][celda.getColumna()].getValor());
 				celda.setSucesores(0, sucesor);
 			}
 			if(celda.getMuro(m)==true && m==1) {
-				Sucesor sucesor = new Sucesor("E",laberinto[celda.getFila()][celda.getColumna()+1], 1+laberinto[celda.getFila()][celda.getColumna()+1].getValor());
+				Sucesor sucesor = new Sucesor("E",laberinto[celda.getFila()][celda.getColumna()+1], laberinto[celda.getFila()][celda.getColumna()+1].getValor());
 				celda.setSucesores(1, sucesor);
 			}
 			if(celda.getMuro(m)==true && m==2) {
-				Sucesor sucesor = new Sucesor("S",laberinto[celda.getFila()+1][celda.getColumna()], 1+laberinto[celda.getFila()+1][celda.getColumna()].getValor());
+				Sucesor sucesor = new Sucesor("S",laberinto[celda.getFila()+1][celda.getColumna()], laberinto[celda.getFila()+1][celda.getColumna()].getValor());
 				celda.setSucesores(2, sucesor);
 			}
 			if(celda.getMuro(m)==true && m==3) {
-				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], 1+laberinto[celda.getFila()][celda.getColumna()-1].getValor());
+				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], laberinto[celda.getFila()][celda.getColumna()-1].getValor());
 				celda.setSucesores(3, sucesor);
 			}
 		}
