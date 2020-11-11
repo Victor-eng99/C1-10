@@ -1,10 +1,11 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Costo {
 	
-	Frontera frontera = new Frontera();
+	ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	
 	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {
 		int id=0;
@@ -14,43 +15,55 @@ public class Costo {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
-				    Nodo n = new Nodo(id, laberinto[f][c].getValor(), laberinto[f][c], -1, "-", profundidad, 10, laberinto[f][c].getValor());
-				    n.toString();
-				    frontera.offer(n);
-					costo(n,objetive,laberinto);
+				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, 10, 0);
+				    frontera.add(n);
+				    System.out.println("Insertado nodo " + n.toString());
+					costo(objetive,laberinto);
 				}
 			}
 		}
 	}
 	
-	public void costo(Nodo padre, String objetive, Celda[][] laberinto) {
-		int id=padre.getId();
+	public void costo(String objetive, Celda[][] laberinto) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		boolean solucion=false;
+		int id=0;
 		
-		while(!solucion && frontera.isEmpty()) {
-			visitados.add(frontera.poll().getEstado());
-			
-			String fc="("+visitados.get(visitados.size()-1).getFila()+","+visitados.get(visitados.size()-1).getColumna()+")";
+		while(!solucion && !frontera.isEmpty()) {
+			System.out.println("____________________________");
+			Nodo padre = frontera.get(0);
+			frontera.remove(0);
+			System.out.println("Sacado nodo " + padre.toString());
+			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
 			if(objetive.equals(fc)) {			
 				solucion=true; // Hemos alcanzado el objetivo
+				System.out.println("\nSolucion encontrada");
+				System.out.println("Estado solución: " + fc);
+			} else {
+				funcionSucesores(padre.getEstado(), laberinto);
+				for(int i=0; i<padre.getEstado().getSucesores().length; i++) {
+					try {
+						Sucesor s=padre.getEstado().getSucesor(i);
+
+						if(!visitados.contains(s.getCelda())) {
+							Nodo n = new Nodo(++id, s.getCostoMov()+padre.getCosto(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, 10, s.getCostoMov()+padre.getCosto());			
+							frontera.add(n);
+							System.out.println("Insertado nodo " + n.toString());
+						} else {
+							System.out.println("CUT en estado ("+s.getCelda().getFila()+","+s.getCelda().getColumna()+")");
+						}
+					}catch(NullPointerException e) {}
+				}
+				visitados.add(padre.getEstado()); // Nodo expandido = Su estado ha sido visitado
+				Collections.sort(frontera);
+				System.out.println("Frontera:");
+				for(int f=0; f<frontera.size(); f++) {
+					System.out.println("("+frontera.get(f).getEstado().getFila()+","+frontera.get(f).getEstado().getFila()+")");
+				}
+				System.exit(0);
 			}
-			
-			int sucesores = funcionSucesores(padre.getEstado(), laberinto);
-			for(int i=sucesores-1;i>=0;i--) {
-				try {
-					Sucesor s=padre.getEstado().getSucesor(i);
-					//TODO: Comprobar que el sucesor no está en visitados
-					Nodo n = new Nodo(++id, padre.getEstado().getSucesor(i).getCostoMov(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, 10, s.getCelda().getValor());			
-					n.toString();
-					frontera.offer(n);
-				}catch(NullPointerException e) {}
-			}
-			visitados.add(padre.getEstado());
-			frontera.ordenar();
 
 		}
-		
 		
 	}
 	
@@ -58,37 +71,25 @@ public class Costo {
 	 * Tipo: Método
 	 * Función: Generar estados sucesores de cada una de los estados (celdas) del laberinto (dependiendo de muros)
 	 */
-	public int funcionSucesores(Celda celda, Celda[][] laberinto) {
-		int sucesores=0;
-		System.out.println("\nESTADO ("+celda.getFila()+","+celda.getColumna()+")");
-		System.out.println("SUCESORES:");
+	public void funcionSucesores(Celda celda, Celda[][] laberinto) {
 		for(int m=0; m<celda.getMuros().length; m++) {
 			if(celda.getMuro(m)==true && m==0) {
 				Sucesor sucesor = new Sucesor("N",laberinto[celda.getFila()-1][celda.getColumna()], 1+laberinto[celda.getFila()-1][celda.getColumna()].getValor());
-				System.out.println(sucesor.toString());
 				celda.setSucesores(0, sucesor);
-				sucesores++;
 			}
 			if(celda.getMuro(m)==true && m==1) {
-				Sucesor sucesor = new Sucesor("E",laberinto[celda.getFila()][celda.getColumna()+1], 1+laberinto[celda.getFila()][celda.getColumna()].getValor());
-				System.out.println(sucesor.toString());
+				Sucesor sucesor = new Sucesor("E",laberinto[celda.getFila()][celda.getColumna()+1], 1+laberinto[celda.getFila()][celda.getColumna()+1].getValor());
 				celda.setSucesores(1, sucesor);
-				sucesores++;
 			}
 			if(celda.getMuro(m)==true && m==2) {
 				Sucesor sucesor = new Sucesor("S",laberinto[celda.getFila()+1][celda.getColumna()], 1+laberinto[celda.getFila()+1][celda.getColumna()].getValor());
-				System.out.println(sucesor.toString());
 				celda.setSucesores(2, sucesor);
-				sucesores++;
 			}
 			if(celda.getMuro(m)==true && m==3) {
-				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], 1+laberinto[celda.getFila()+1][celda.getColumna()].getValor());
-				System.out.println(sucesor.toString());
+				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], 1+laberinto[celda.getFila()][celda.getColumna()-1].getValor());
 				celda.setSucesores(3, sucesor);
-				sucesores++;
 			}
 		}
-		return sucesores;
 	} 
 
 }
