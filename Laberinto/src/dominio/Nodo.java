@@ -6,7 +6,7 @@ package dominio;
 * Funcion: Construccion de los atributos de la clase Nodo
 */
 
-public class Nodo implements Comparable<Nodo>{
+public class Nodo {
 	private int id;
 	private Celda estado;
 	private int valor;
@@ -102,16 +102,5 @@ public class Nodo implements Comparable<Nodo>{
 		return "["+this.id+"]["+this.costo+",("+this.estado.getFila()+","+this.estado.getColumna()+"),"+this.idPadre+","+this.accion+","+this.profundidad+","+this.heuristica+","+this.valor+"]";
 	}
 
-
-	@Override
-	public int compareTo(Nodo o) {
-		if (costo < o.costo) {
-            return -1;
-        }
-        if (costo > o.costo) {
-            return 1;
-        }
-        return 0;
-	}
 
 }
