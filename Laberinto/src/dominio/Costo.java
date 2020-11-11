@@ -15,7 +15,8 @@ public class Costo {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
 				    Nodo n = new Nodo(id, laberinto[f][c].getValor(), laberinto[f][c], -1, "-", profundidad, 10, laberinto[f][c].getValor());
-					frontera.offer(n);
+				    n.toString();
+				    frontera.offer(n);
 					costo(n,objetive,laberinto);
 				}
 			}
@@ -32,19 +33,20 @@ public class Costo {
 			
 			String fc="("+visitados.get(visitados.size()-1).getFila()+","+visitados.get(visitados.size()-1).getColumna()+")";
 			if(objetive.equals(fc)) {			
-				solucion=true;
+				solucion=true; // Hemos alcanzado el objetivo
 			}
 			
 			int sucesores = funcionSucesores(padre.getEstado(), laberinto);
 			for(int i=sucesores-1;i>=0;i--) {
 				try {
 					Sucesor s=padre.getEstado().getSucesor(i);
+					//TODO: Comprobar que el sucesor no está en visitados
 					Nodo n = new Nodo(++id, padre.getEstado().getSucesor(i).getCostoMov(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, 10, s.getCelda().getValor());			
 					n.toString();
 					frontera.offer(n);
 				}catch(NullPointerException e) {}
 			}
-			
+			visitados.add(padre.getEstado());
 			frontera.ordenar();
 
 		}

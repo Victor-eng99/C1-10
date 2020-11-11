@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /* Nombre: Frontera
@@ -30,7 +31,8 @@ public class Frontera {
 	}
 	
 	public void ordenar() {
-		
+		Collections.sort(frontera);
 	}
+
 	
 }
