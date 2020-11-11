@@ -32,7 +32,7 @@ public class Costo {
 		while(!solucion && !frontera.isEmpty()) {
 			System.out.println("____________________________");
 			Nodo padre = frontera.get(0);
-			frontera.remove(0);
+			//frontera.remove(0);
 			System.out.println("Sacado nodo " + padre.toString());
 			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
 			if(objetive.equals(fc)) {			
