@@ -100,7 +100,6 @@ public class Anchura {
 	*/
 	public void mostrarSolucion(ArrayList<Nodo> aSolucion,boolean solucion,Celda[][] laberinto) {	
 		if(solucion) {
-			//Collections.sort(aSolucion, new SortbyValor());
 			System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
 			GeneradorTXT gt=new GeneradorTXT();
 			gt.generarTXT(laberinto,"BREADTH",aSolucion);
