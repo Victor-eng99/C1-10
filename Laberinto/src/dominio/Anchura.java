@@ -86,8 +86,7 @@ public class Anchura {
 					}catch(NullPointerException e) {}
 				}		
 			}
-		}
-		
+		}	
 		long fin = System.currentTimeMillis();
         System.out.println("Tiempo de Ejecucion: "+(fin-inicio)+" MiliSegundos"); 
         mostrarSolucion(aSolucion,solucion,laberinto);			
