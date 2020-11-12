@@ -1,8 +1,17 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import dominio.AEstrella.SortbyValor;
 import presentacion.InterfazPrincipal;
 
 /* Nombre: GeneradorNodos
@@ -39,70 +48,82 @@ public class Anchura {
 	 * Función: Busqueda en anchura a partir del nodo inicial hasta el objetivo
 	 */
 	public void anchura(Nodo padre,String objetive,Celda[][] laberinto) {
-		ArrayList<Nodo> visitados=new ArrayList<Nodo>();
+		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> frontera=new ArrayList<Nodo>();
+		ArrayList<Nodo> aSolucion=new ArrayList<Nodo>();
+		
 		int id=padre.getId();
 		int costo=padre.getCosto()+1;
 		int profundidad=padre.getProfundidad()+1;
 		boolean solucion=false;
 		
+		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
+		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
+		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
+
 		frontera.add(padre);
 		long inicio = System.currentTimeMillis();
-		while(!frontera.isEmpty() && !solucion) {		
-			visitados.add(frontera.remove(0));
+		
+		while(!frontera.isEmpty() && !solucion) {
+			Nodo nodo= frontera.remove(0);
 			costo++;
 			profundidad++;
-			//Comprobamos si hemos llegado al objetivo y volvemos al menu principal
-			String fc="("+visitados.get(visitados.size()-1).getEstado().getFila()+","+visitados.get(visitados.size()-1).getEstado().getColumna()+")";
+					
+			//Comprobamos si hemos llegado al objetivo 
+			String fc="("+nodo.getEstado().getFila()+","+nodo.getEstado().getColumna()+")";
 			if(objetive.equals(fc)) {			
 				solucion=true;
-			}
-			
-			int sucesores=funcionSucesores(visitados.get(visitados.size()-1).getEstado(), laberinto);
-			Celda actual=visitados.get(visitados.size()-1).getEstado();
-			for(int i=sucesores-1;i>0;i--) {
-				try {
-				Sucesor s1=actual.getSucesor(i);
-				Nodo n = new Nodo(++id,costo, s1.getCelda(), -1, "-", costo, 10, profundidad);			
-					frontera.add(n);						
-				}catch(NullPointerException e) {}
-			}		
-		}
-		
-		long fin = System.currentTimeMillis();
-        System.out.println("Tiempo de Ejecucion: "+(fin-inicio)+" MiliSegundos");
-		if(solucion) {
-			System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
-		}else
-			System.out.println("\u001B[31mNo hay solucion");
-			
-	}
-	
-	
-	
-	/* Nombre: contiene
-	 * Tipo: Método
-	 * Función: Nos dice si un nodo existe o no en un ArrayList
-	 */
-	public boolean contiene(ArrayList<Nodo> visitados,Nodo n) {
-		boolean encontrado=false;
-		
-		for(int i=visitados.size()-1;i>0;i--) {
-			if(n.getEstado().getFila()==visitados.get(i).getEstado().getFila() && 
-					n.getEstado().getColumna()==visitados.get(i).getEstado().getColumna()) {
-						encontrado=true;
+			}else if(!visitados.contains(nodo.getEstado()) && nodo.getProfundidad()<profundidad){
+					aSolucion.add(nodo);
+					visitados.add(nodo.getEstado());
+					Celda actual=funcionSucesores(nodo.getEstado(), laberinto);
+				for(int i=actual.getSucesores().length-1;i>=0;i--) {
+					try {
+					Sucesor s1=actual.getSucesor(i);
+					int heuristica= Math.abs(s1.getCelda().getFila() - fObjetivo) + Math.abs(s1.getCelda().getColumna() - cObjetivo);
+					Nodo n = new Nodo(++id,costo+s1.getCelda().getValor(), s1.getCelda(), actual.getValor(), s1.getMov(), profundidad, heuristica, s1.getCelda().getValor());			
+					frontera.add(n); 						
+					}catch(NullPointerException e) {}
+				}		
 			}
 		}	
-		return encontrado;
+		long fin = System.currentTimeMillis();
+        System.out.println("Tiempo de Ejecucion: "+(fin-inicio)+" MiliSegundos"); 
+        mostrarSolucion(aSolucion,solucion,laberinto);			
 	}
 	
+
+	/* Nombre: MostarSolucion
+	* Tipo: Método
+	* Función: Mostramos la solucion y llamamos a la clase encargada de generar el .TXT
+	*/
+	public void mostrarSolucion(ArrayList<Nodo> aSolucion,boolean solucion,Celda[][] laberinto) {	
+		if(solucion) {
+			System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
+			GeneradorTXT gt=new GeneradorTXT();
+			gt.generarTXT(laberinto,"BREADTH",aSolucion);
+		}else
+			System.out.println("\u001B[31mNo hay solucion");			
+	}
+	
+	
+	/* Nombre: SortbyValor
+	* Tipo: Método
+	* Función: Ordenar la frontera de menor a mayor segun el valor del Nodo
+	*/
+    public static class SortbyValor implements Comparator<Nodo> { 
+        public int compare(Nodo a, Nodo b){ 
+            return a.getEstado().getFila() - b.getEstado().getColumna(); 
+        }     
+    } 
+    
 	
 	
 	/* Nombre: funcionSucesores
 	 * Tipo: Método
 	 * Función: Generar estados sucesores de cada una de los estados (celdas) del laberinto (dependiendo de muros)
 	 */
-	public int funcionSucesores(Celda celda, Celda[][] laberinto) {
+	public Celda funcionSucesores(Celda celda, Celda[][] laberinto) {
 		int sucesores=0;
 		System.out.println("\nESTADO ("+celda.getFila()+","+celda.getColumna()+")");
 		System.out.println("SUCESORES:");
@@ -132,7 +153,7 @@ public class Anchura {
 				sucesores++;
 			}
 		}
-		return sucesores;
+		return celda;
 	} 
 
 }
