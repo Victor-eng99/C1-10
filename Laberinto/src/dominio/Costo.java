@@ -26,6 +26,7 @@ public class Costo {
 	
 	public void costo(String objetive, Celda[][] laberinto) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
+		ArrayList<Nodo> nodosVisitados=new ArrayList<Nodo>();
 		boolean solucion=false;
 		int id=0;
 		
@@ -37,6 +38,9 @@ public class Costo {
 			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
 			if(objetive.equals(fc)) {			
 				solucion=true; // Hemos alcanzado el objetivo
+				visitados.add(padre.getEstado());
+				nodosVisitados.add(padre);
+				mostrarCamino(nodosVisitados);
 				System.out.println("\nSolucion encontrada");
 				System.out.println("Estado solución: " + fc);
 			} else {
@@ -56,12 +60,28 @@ public class Costo {
 					}catch(NullPointerException e) {}
 				}
 				visitados.add(padre.getEstado()); // Nodo expandido = Su estado ha sido visitado
+				nodosVisitados.add(padre);
 				Collections.sort(frontera);
-				System.out.println("En cabecera se encuentra el nodo con estado ("+frontera.get(0).getEstado().getFila()+","+frontera.get(0).getEstado().getColumna()+")");
+				System.out.println("En cabecera se encuentra el nodo con estado ("+frontera.get(0).getEstado().getFila()+","+frontera.get(0).getEstado().getColumna()+") y valor " + frontera.get(0).getValor());
 			}
 
 		}
 		
+	}
+	
+	public void mostrarCamino(ArrayList<Nodo> nodosVisitados) {
+		System.out.println("\nSOLUCIÓN INVERSA:");
+		Nodo siguiente = nodosVisitados.get(nodosVisitados.size()-1);
+		System.out.println(siguiente.toString());
+		while(siguiente.getIdPadre()!=-1) {
+			for(int v=0; v<nodosVisitados.size(); v++) {
+				if(siguiente.getIdPadre()==nodosVisitados.get(v).getId()) {
+					Nodo padre = nodosVisitados.get(v);
+					System.out.println(padre.toString());
+					siguiente = padre;
+				}
+			}
+		}
 	}
 	
 	/* Nombre: funcionSucesores
