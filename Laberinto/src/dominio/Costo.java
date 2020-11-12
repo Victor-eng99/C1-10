@@ -15,8 +15,8 @@ public class Costo {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
-				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, 10, 0);
-				    frontera.add(n);
+				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, 10, 0);			
+				    frontera.add(n); 
 				    System.out.println("Insertado nodo " + n.toString());
 					costo(objetive,laberinto);
 				}
@@ -30,9 +30,9 @@ public class Costo {
 		int id=0;
 		
 		while(!solucion && !frontera.isEmpty()) {
-			System.out.println("____________________________");
+			System.out.println("\n____________________________");
 			Nodo padre = frontera.get(0);
-			//frontera.remove(0);
+			frontera.remove(0);
 			System.out.println("Sacado nodo " + padre.toString());
 			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
 			if(objetive.equals(fc)) {			
@@ -57,11 +57,7 @@ public class Costo {
 				}
 				visitados.add(padre.getEstado()); // Nodo expandido = Su estado ha sido visitado
 				Collections.sort(frontera);
-				System.out.println("Frontera:");
-				for(int f=0; f<frontera.size(); f++) {
-					System.out.println("("+frontera.get(f).getEstado().getFila()+","+frontera.get(f).getEstado().getFila()+")");
-				}
-				System.exit(0);
+				System.out.println("En cabecera se encuentra el nodo con estado ("+frontera.get(0).getEstado().getFila()+","+frontera.get(0).getEstado().getColumna()+")");
 			}
 
 		}
