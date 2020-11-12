@@ -30,8 +30,6 @@ public class Celda {
 	
 	int idNodo;
 	
-	boolean expandida;
-	
 	/* Nombre: Celda
 	 * Tipo: Metodo
 	 * Funcion: Constructor de clase Celda
@@ -131,14 +129,6 @@ public class Celda {
 
 	public void setIdNodo(int idNodo) {
 		this.idNodo = idNodo;
-	}
-
-	public boolean isExpandida() {
-		return expandida;
-	}
-
-	public void setExpandida(boolean expandida) {
-		this.expandida = expandida;
 	}
 	
 }

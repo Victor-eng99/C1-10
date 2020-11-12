@@ -20,7 +20,7 @@ import presentacion.InterfazPrincipal;
  */
 public class Anchura {
 	
-	Frontera frontera = new Frontera();
+	ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	
 	/* Nombre: nodosAleatorios
 	 * Tipo: Metodo

@@ -42,7 +42,7 @@ public class LectorJSON {
 		}
 	}
 	
-	public void leerMazeArbol(String initial, String objective, JSONObject laberinto,int opcion) {
+	public void leerMazeArbol(String initial, String objective, JSONObject laberinto, int opcion) {
 		Celda[][] lab;
 		lab = construirLaberinto(laberinto);
 		boolean correcto=comprobarValidez(lab);
@@ -55,13 +55,13 @@ public class LectorJSON {
 			if(opcion==1) {
 				AEstrella ae=new AEstrella();
 				ae.nodoInicial(initial, objective, lab);
-			}/*if(opcion==2) {
-				Coste coste=new Coste();
-				coste.nodoInicial(initial, objective, lab,opcion)
+			}if(opcion==2) {
+				Costo costo=new Costo();
+				costo.nodoInicial(initial, objective, lab);
 			}if(opcion==3) {
 				Profundidad prof=new Profundidad();
-				prof.nodoInicial(initial, objective, lab,opcion);
-			}*/
+				//prof.nodoInicial(initial, objective, lab);
+			}
 		} else {
 			info = new Informacion();
 			info.errorJSON();
