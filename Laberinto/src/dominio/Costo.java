@@ -150,6 +150,7 @@ public class Costo {
 		System.out.println("\nSOLUCIÓN:");
 		System.out.println("[id][cost,state,father_id,action,depth,h,value]");
 		for(int s=sol.size()-1; s>=0; s--) {
+			solucion.add(sol.get(s));
 			System.out.println(sol.get(s).toString());
 		}
 		System.out.println(nodosVisitados.get(nodosVisitados.size()-1));

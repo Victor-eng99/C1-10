@@ -24,8 +24,8 @@ public class GeneradorTXT {
 		try {
 			FileWriter file = new FileWriter("sol_"+laberinto.length+"x"+ laberinto[0].length+"_"+busqueda+".txt");
 			file.write("[id][cost,state,father_id,action,depth,h,value]\n");
-			for(int i=0;i<aSolucion.size()-1;i++) {
-				//file.write(aSolucion.get(i).toString()+"\n");
+			for(int i=0;i<aSolucion.size();i++) {
+				file.write(aSolucion.get(i).toString()+"\n");
 			}
 			file.flush();
 			file.close();
