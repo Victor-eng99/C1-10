@@ -3,17 +3,10 @@ package dominio;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import dominio.AEstrella.SortbyValor;
-import presentacion.InterfazPrincipal;
+
 
 /* Nombre: GeneradorNodos
  * Tipo: Clase
@@ -31,7 +24,7 @@ public class Anchura {
 		
 		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
 		int fObjetivo= Integer.parseInt(objective.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objective.substring(4, 5));
+		int cObjetivo= Integer.parseInt(objective.substring(3, 4));
 		
 		int fInicial= Integer.parseInt(initial.substring(1, 2));
 		int cInicial= Integer.parseInt(initial.substring(3, 4));
@@ -42,7 +35,6 @@ public class Anchura {
 				if(initial.equals(fc)) {
 					int heuristica= Math.abs(fInicial - fObjetivo) + Math.abs(cInicial - cObjetivo);
 				    Nodo n = new Nodo(id, costo, laberinto[f][c], -1, "-", 0, heuristica, 0);
-					laberinto[f][c].setIdNodo(id);
 					anchura(n,objective,laberinto);
 				}
 			}
@@ -61,16 +53,13 @@ public class Anchura {
 		ArrayList<Nodo> camino=new ArrayList<Nodo>();
 		
 		int id=padre.getId();
-		int costo=padre.getCosto();
-		int profundidad=padre.getProfundidad()+1;
 		boolean solucion=false;
 		
 		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
 		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(4, 5));
+		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
 
 		frontera.add(padre);
-		long inicio = System.currentTimeMillis();
 		
 		while(!frontera.isEmpty() && !solucion) {		
 			Nodo nodo= frontera.poll();
@@ -80,8 +69,7 @@ public class Anchura {
 			if(objetive.equals(fc)) {
 				visitados.add(nodo.getEstado());
 				aSolucion.add(nodo);
-				solucion=true;
-				camino=mostrarCamino(aSolucion);
+				mostrarCamino(aSolucion, laberinto);
 			}else if(!visitados.contains(nodo.getEstado()) && nodo.getProfundidad()<1000000){
 					aSolucion.add(nodo);
 					visitados.add(nodo.getEstado());
@@ -99,45 +87,41 @@ public class Anchura {
 			}
 			
 		}	
-		long fin = System.currentTimeMillis();
-        System.out.println("\nTiempo de Ejecucion: "+(fin-inicio)+" MiliSegundos"); 
-        Collections.sort(camino,new SortbyValor());
-        mostrarSolucion(camino,solucion,laberinto);			
+        Collections.sort(camino,new SortbyValor());		
 	}
 
-
-	public ArrayList<Nodo> mostrarCamino(ArrayList<Nodo> nodosVisitados) {
-		ArrayList<Nodo> solucion=new ArrayList<Nodo>();
-		System.out.println("\nSOLUCIÓN INVERSA:");
+	public void mostrarCamino(ArrayList<Nodo> nodosVisitados, Celda[][] laberinto) {
+		ArrayList<Nodo> sol = new ArrayList<Nodo>();
+		ArrayList<Nodo> solucion = new ArrayList<Nodo>();
 		Nodo siguiente = nodosVisitados.get(nodosVisitados.size()-1);
-		solucion.add(siguiente);
-		System.out.println(siguiente.toString());
 		while(siguiente.getIdPadre()!=-1) {
-			for(int v=nodosVisitados.size()-1; v>=0; v--) {
+			for(int v=0; v<nodosVisitados.size(); v++) {
 				if(siguiente.getIdPadre()==nodosVisitados.get(v).getId()) {
 					Nodo padre = nodosVisitados.get(v);
-					solucion.add(padre);
-					System.out.println(padre.toString());
+					sol.add(padre);
 					siguiente = padre;
 				}
 			}
 		}
-		return solucion;
+		System.out.println("\nSOLUCIÓN:");
+		System.out.println("[id][cost,state,father_id,action,depth,h,value]");
+		for(int s=sol.size()-1; s>=0; s--) {
+			solucion.add(sol.get(s));
+			System.out.println(sol.get(s).toString());
+		}
+		System.out.println(nodosVisitados.get(nodosVisitados.size()-1));
+		mostrarSolucion(solucion, laberinto);
 	}
 	
 	/* Nombre: MostarSolucion
 	* Tipo: Método
 	* Función: Mostramos la solucion y llamamos a la clase encargada de generar el .TXT
 	*/
-	public void mostrarSolucion(ArrayList<Nodo> aSolucion,boolean solucion,Celda[][] laberinto) {	
-		if(solucion) {		
-			System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
-			GeneradorTXT gt=new GeneradorTXT();
-			gt.generarTXT(laberinto,"BREADTH",aSolucion);
-		}else
-			System.out.println("\u001B[31mNo hay solucion");			
+	public void mostrarSolucion(ArrayList<Nodo> aSolucion, Celda[][] laberinto) {	
+		System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
+		GeneradorTXT gt=new GeneradorTXT();
+		gt.generarTXT(laberinto,"BREADTH",aSolucion);
 	}
-	
 	
 	/* Nombre: funcionSucesores
 	 * Tipo: Método
