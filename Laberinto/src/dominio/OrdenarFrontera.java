@@ -5,8 +5,7 @@ import java.util.Comparator;
 public class OrdenarFrontera implements Comparator<Nodo> {
 
 	public int compare(Nodo old,Nodo actual) {
-
-		 if(old.getValor() > actual.getValor())
+		if(old.getValor() > actual.getValor())
 				return 1;
 		else if(old.getValor() < actual.getValor())
 				return -1;

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-import dominio.AEstrella.SortbyValor;
 
 
 /* Nombre: GeneradorNodos
@@ -14,9 +13,9 @@ import dominio.AEstrella.SortbyValor;
  */
 public class Anchura {
 	
-	/* Nombre: nodosAleatorios
+	/* Nombre: NodoInicial
 	 * Tipo: Metodo
-	 * Funcion: Crear nodos 
+	 * Funcion: Encontrar el nodo inicial y comenzar la busqueda
 	 */
 	public void nodoInicial(String initial, String objective, Celda[][] laberinto) {	
 		int id=0;
@@ -47,10 +46,10 @@ public class Anchura {
 	 */
 	public void anchura(Nodo padre,String objetive,Celda[][] laberinto) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
+		ArrayList<Nodo> aSolucion=new ArrayList<Nodo>();//ArrayList auxiliar para guardar la solucion y poder mostrarla
+		
 		Comparator<Nodo> comparador= new OrdenarFrontera();
 		PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>(1000,comparador);
-		ArrayList<Nodo> aSolucion=new ArrayList<Nodo>();//ArrayList auxiliar para guardar la solucion y poder mostrarla
-		ArrayList<Nodo> camino=new ArrayList<Nodo>();
 		
 		int id=padre.getId();
 		boolean solucion=false;
@@ -77,18 +76,14 @@ public class Anchura {
 					funcionSucesores(nodo.getEstado(), laberinto);
 				for(int i=0;i<nodo.getEstado().getSucesores().length;i++) {
 					try {
-					Sucesor s1=nodo.getEstado().getSucesor(i);
-					if(s1.getCelda()!=null) {
+						Sucesor s1=nodo.getEstado().getSucesor(i);
 						int heuristica= Math.abs(s1.getCelda().getFila() - fObjetivo) + Math.abs(s1.getCelda().getColumna() - cObjetivo);
 						Nodo n = new Nodo(++id,nodo.getCosto()+s1.getCelda().getValor()+1, s1.getCelda(), nodo.getId(), s1.getMov(), nodo.getProfundidad()+1, heuristica, s1.getCostoMov()+nodo.getValor());			
 						frontera.add(n); 		
-					}
 					}catch(NullPointerException e) {}
 				}		
-			}
-			
-		}	
-        Collections.sort(camino,new SortbyValor());		
+			}		
+		}		
 	}
 
 	public void mostrarCamino(ArrayList<Nodo> nodosVisitados, Celda[][] laberinto) {
