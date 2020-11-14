@@ -110,7 +110,7 @@ public class Anchura {
 		mostrarSolucion(solucion, laberinto);
 	}
 	
-	/* Nombre: MostrarSolucion
+	/* Nombre: mostrarSolucion
 	* Tipo: Metodo
 	* Función: Mostramos la solucion y llamamos a la clase encargada de generar el .TXT
 	*/

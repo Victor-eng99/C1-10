@@ -91,7 +91,7 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 		
 	}
 	
-	/* Nombre: comprobarValores
+	/* Nombre: segundosCriterios
 	 * Tipo: Metodo
 	 * Funcion: Establecer en cabecera de frontera el nodo indicado segun los criterios de seleccion:
 	 * 1º valor, 2º fila, 3º columna
@@ -166,7 +166,7 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 		mostrarSolucion(solucion, laberinto);
 	}
 	
-	/* Nombre: MostrarSolucion
+	/* Nombre: mostrarSolucion
 	* Tipo: Metodo
 	* Función: Mostramos la solucion y llamamos a la clase encargada de generar el .TXT
 	*/
