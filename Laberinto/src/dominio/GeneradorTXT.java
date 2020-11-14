@@ -1,5 +1,6 @@
 package dominio;
 
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -21,12 +22,13 @@ public class GeneradorTXT {
 	 */
 	public void generarTXT(Celda[][] laberinto,String busqueda,ArrayList<Nodo> aSolucion) {
 		try {
-			PrintWriter writer = new PrintWriter("sol_"+laberinto.length+"x"+ laberinto[0].length+"_"+busqueda+".txt", "UTF-8");
-			writer.println("[id][cost,state,father_id,action,depth,h,value]");
+			FileWriter file = new FileWriter("sol_"+laberinto.length+"x"+ laberinto[0].length+"_"+busqueda+".txt");
+			file.write("[id][cost,state,father_id,action,depth,h,value]\n");
 			for(int i=0;i<aSolucion.size()-1;i++) {
-				writer.println(aSolucion.get(i).toString());
+				//file.write(aSolucion.get(i).toString()+"\n");
 			}
-            writer.close();
+			file.flush();
+			file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }		

@@ -42,7 +42,7 @@ public class Anchura {
 	}
 	
 	/* Nombre: anchura
-	 * Tipo: Método
+	 * Tipo: Metodo
 	 * Función: Busqueda en anchura a partir del nodo inicial hasta el objetivo
 	 */
 	public void anchura(Nodo padre,String objetive,Celda[][] laberinto) {
@@ -113,8 +113,8 @@ public class Anchura {
 		mostrarSolucion(solucion, laberinto);
 	}
 	
-	/* Nombre: MostarSolucion
-	* Tipo: Método
+	/* Nombre: MostrarSolucion
+	* Tipo: Metodo
 	* Función: Mostramos la solucion y llamamos a la clase encargada de generar el .TXT
 	*/
 	public void mostrarSolucion(ArrayList<Nodo> aSolucion, Celda[][] laberinto) {	
@@ -124,7 +124,7 @@ public class Anchura {
 	}
 	
 	/* Nombre: funcionSucesores
-	 * Tipo: Método
+	 * Tipo: Metodo
 	 * Función: Generar estados sucesores de cada una de los estados (celdas) del laberinto (dependiendo de muros)
 	 */
 	public void funcionSucesores(Celda celda, Celda[][] laberinto) {

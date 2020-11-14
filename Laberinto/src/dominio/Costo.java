@@ -50,8 +50,7 @@ public class Costo {
 				solucion=true; // Hemos alcanzado el objetivo
 				visitados.add(padre.getEstado());
 				nodosVisitados.add(padre);
-				System.out.println("\nSolucion encontrada");
-				mostrarCamino(nodosVisitados);
+				mostrarCamino(nodosVisitados, laberinto);
 			} else {
 				if(!visitados.contains(padre.getEstado())) {
 					funcionSucesores(padre.getEstado(), laberinto);
@@ -135,8 +134,9 @@ public class Costo {
 		
 	}
 	
-	public void mostrarCamino(ArrayList<Nodo> nodosVisitados) {
+	public void mostrarCamino(ArrayList<Nodo> nodosVisitados, Celda[][] laberinto) {
 		ArrayList<Nodo> sol = new ArrayList<Nodo>();
+		ArrayList<Nodo> solucion = new ArrayList<Nodo>();
 		Nodo siguiente = nodosVisitados.get(nodosVisitados.size()-1);
 		while(siguiente.getIdPadre()!=-1) {
 			for(int v=0; v<nodosVisitados.size(); v++) {
@@ -153,6 +153,17 @@ public class Costo {
 			System.out.println(sol.get(s).toString());
 		}
 		System.out.println(nodosVisitados.get(nodosVisitados.size()-1));
+		mostrarSolucion(solucion, laberinto);
+	}
+	
+	/* Nombre: MostrarSolucion
+	* Tipo: Metodo
+	* Función: Mostramos la solucion y llamamos a la clase encargada de generar el .TXT
+	*/
+	public void mostrarSolucion(ArrayList<Nodo> aSolucion, Celda[][] laberinto) {	
+		System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
+		GeneradorTXT gt=new GeneradorTXT();
+		gt.generarTXT(laberinto,"UNIFORM",aSolucion);
 	}
 	
 	/* Nombre: funcionSucesores
