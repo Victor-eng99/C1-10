@@ -27,6 +27,10 @@ public class Costo {
 		}
 	}
 	
+	/* Nombre: costo
+	 * Tipo: Metodo
+	 * Funcion: Implementacion de algoritmo principal de busqueda por costo uniforme
+	 */
 	public void costo(String objetive, Celda[][] laberinto) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> nodosVisitados=new ArrayList<Nodo>();
@@ -66,11 +70,68 @@ public class Costo {
 				visitados.add(padre.getEstado()); // Nodo expandido = Su estado ha sido visitado
 				nodosVisitados.add(padre);
 				Collections.sort(frontera);
-				System.out.println("Cabecera de frontera = ("+frontera.get(0).getEstado().getFila()+","+frontera.get(0).getEstado().getColumna()+") y valor " + frontera.get(0).getValor());
+				System.out.println("\n");
+				segundosCriterios();
+				System.out.println("");
+				System.out.println("\nFrontera:");
+				for(Nodo n:frontera) {
+					System.out.println(n.toString());
+				}
 	
 			}
 
 		}
+		
+	}
+	
+	/* Nombre: comprobarValores
+	 * Tipo: Metodo
+	 * Funcion: Establecer en cabecera de frontera el nodo indicado segun los criterios de seleccion:
+	 * 1º valor, 2º fila, 3º columna
+	 */
+	public void segundosCriterios() {
+		ArrayList<Nodo> valorMinimo = new ArrayList<Nodo>();
+		ArrayList<Nodo> filaMinima = new ArrayList<Nodo>();
+		ArrayList<Integer> columnas = new ArrayList<Integer>();
+		ArrayList<Integer> filas = new ArrayList<Integer>();
+		int valor;
+
+		try {
+			System.out.println("Nodos con minimo valor de frontera:");
+			valor=frontera.get(0).getValor();
+			for(Nodo n:frontera) {
+				if(n.getValor()==valor) {
+					valorMinimo.add(n);
+					filas.add(n.getEstado().getFila());
+					System.out.print(n.toString()+" ");
+				}
+			}
+			
+			int fMin = Collections.min(filas);
+			
+			System.out.println("\n");
+			System.out.println("Nodos con fila minima:");
+			for(Nodo n:valorMinimo) {
+				if(n.getEstado().getFila()==fMin) {				
+					filaMinima.add(n);
+					columnas.add(n.getEstado().getColumna());
+					System.out.print(n.toString()+" ");
+				}
+			}
+			
+			int cMin = Collections.min(columnas);
+			System.out.println("\n");
+			System.out.println("Columna minima: " + cMin);
+			
+			for(Nodo n:filaMinima) {
+				if(n.getEstado().getColumna()==cMin) {
+					System.out.println("\nNodo a cabecera de frontera: " + n.toString());
+					frontera.remove(n);
+					frontera.add(0, n);
+				}
+			}
+			
+		} catch(IndexOutOfBoundsException e) {}
 		
 	}
 	
@@ -95,7 +156,7 @@ public class Costo {
 	}
 	
 	/* Nombre: funcionSucesores
-	 * Tipo: Método
+	 * Tipo: Metodo
 	 * Función: Generar estados sucesores de cada una de los estados (celdas) del laberinto (dependiendo de muros)
 	 */
 	public void funcionSucesores(Celda celda, Celda[][] laberinto) {

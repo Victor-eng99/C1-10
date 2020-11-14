@@ -130,5 +130,6 @@ public class Celda {
 	public void setIdNodo(int idNodo) {
 		this.idNodo = idNodo;
 	}
+
 	
 }

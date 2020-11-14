@@ -102,13 +102,12 @@ public class Nodo implements Comparable<Nodo>{
 		return "["+this.id+"]["+this.costo+",("+this.estado.getFila()+","+this.estado.getColumna()+"),"+this.idPadre+","+this.accion+","+this.profundidad+","+this.heuristica+","+this.valor+"]";
 	}
 
-
 	@Override
-	public int compareTo(Nodo o) {
-		if (valor < o.valor) {
+	public int compareTo(Nodo n) {
+		if (valor < n.valor) {
             return -1;
         }
-        if (valor > o.valor) {
+        if (valor > n.valor) {
             return 1;
         }
 		return 0;
