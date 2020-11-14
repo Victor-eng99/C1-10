@@ -69,6 +69,7 @@ public class Anchura {
 			if(objetive.equals(fc)) {
 				visitados.add(nodo.getEstado());
 				aSolucion.add(nodo);
+				solucion=true;
 				mostrarCamino(aSolucion, laberinto);
 			}else if(!visitados.contains(nodo.getEstado()) && nodo.getProfundidad()<1000000){
 					aSolucion.add(nodo);
@@ -109,6 +110,7 @@ public class Anchura {
 			solucion.add(sol.get(s));
 			System.out.println(sol.get(s).toString());
 		}
+		solucion.add(nodosVisitados.get(nodosVisitados.size()-1));
 		System.out.println(nodosVisitados.get(nodosVisitados.size()-1));
 		mostrarSolucion(solucion, laberinto);
 	}

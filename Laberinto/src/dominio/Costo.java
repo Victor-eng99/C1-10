@@ -153,6 +153,7 @@ public class Costo {
 			solucion.add(sol.get(s));
 			System.out.println(sol.get(s).toString());
 		}
+		solucion.add(nodosVisitados.get(nodosVisitados.size()-1));
 		System.out.println(nodosVisitados.get(nodosVisitados.size()-1));
 		mostrarSolucion(solucion, laberinto);
 	}
