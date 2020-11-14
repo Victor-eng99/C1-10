@@ -173,7 +173,7 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	public void mostrarSolucion(ArrayList<Nodo> aSolucion, Celda[][] laberinto) {	
 		System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
 		GeneradorTXT gt=new GeneradorTXT();
-		gt.generarTXT(laberinto,"UNIFORM",aSolucion);
+		gt.generarTXT(laberinto,"A",aSolucion);
 	}
 	
 	/* Nombre: funcionSucesores
