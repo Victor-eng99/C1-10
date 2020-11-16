@@ -1,10 +1,8 @@
 package dominio;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-
 
 
 /* Nombre: GeneradorNodos
@@ -17,21 +15,12 @@ public class Anchura {
 	 * Tipo: Metodo
 	 * Funcion: Encontrar el nodo inicial y comenzar la busqueda
 	 */
-	public void nodoInicial(String initial, String objective, Celda[][] laberinto) {	
+	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {	
 		int id=0;
 		int costo=0;
 		
-		//Sacamos la posicion donde se encuentra la Fila/Columna del Nodo Objetivo
-		int desde=3,hasta=4;
-		if(",".equals(objective.substring(3, 4))) {
-			desde=4;hasta=5;
-		}else if(",".equals(objective.substring(4, 5))){
-			desde=5;hasta=6;
-		}
-		
-		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
-		int fObjetivo= Integer.parseInt(objective.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objective.substring(desde, hasta));
+		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
+		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
 		
 		int fInicial= Integer.parseInt(initial.substring(1, 2));
 		int cInicial= Integer.parseInt(initial.substring(3, 4));
@@ -42,7 +31,7 @@ public class Anchura {
 				if(initial.equals(fc)) {
 					int heuristica= Math.abs(fInicial - fObjetivo) + Math.abs(cInicial - cObjetivo);
 				    Nodo n = new Nodo(id, costo, laberinto[f][c], -1, "-", 0, heuristica, 0);
-					anchura(n,objective,laberinto,desde,hasta);
+					anchura(n,objetive,laberinto);
 				}
 			}
 		}
@@ -52,7 +41,7 @@ public class Anchura {
 	 * Tipo: Metodo
 	 * Función: Busqueda en anchura a partir del nodo inicial hasta el objetivo
 	 */
-	public void anchura(Nodo padre,String objetive,Celda[][] laberinto,int desde,int hasta) {
+	public void anchura(Nodo padre,String objetive,Celda[][] laberinto) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> aSolucion=new ArrayList<Nodo>();//ArrayList auxiliar para guardar la solucion y poder mostrarla
 		
@@ -64,7 +53,7 @@ public class Anchura {
 		
 		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
 		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(desde, hasta));
+		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
 
 		frontera.add(padre);
 		while(!frontera.isEmpty() && !solucion) {		

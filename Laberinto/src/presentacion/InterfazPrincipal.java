@@ -56,9 +56,10 @@ public class InterfazPrincipal {
 				System.out.println();
 				System.out.println("0.  Busqueda en Anchura ");
 				System.out.println("1.  Busqueda en A*");
-				System.out.println("2.  Busqueda en Coste uniforme");	
+				System.out.println("2.  Busqueda en Costo Uniforme");	
 				System.out.println("3.  Busqueda en Profundidad");	
-				System.out.println("4.  Volver atras");
+				System.out.println("4.  Busqueda Voraz");
+				System.out.println("5.  Volver atras");
 				System.out.println("\n\u001B[36mSeleccione una opción: \u001B[0m");
 				try {
 					opcion = teclado.nextInt();
@@ -66,8 +67,8 @@ public class InterfazPrincipal {
 					System.err.println("Introduzca un valor numérico entre 0 y 3");
 					teclado.next();
 				}
-			}while(opcion>4 || opcion<0);
-			if(opcion==4)
+			}while(opcion>45|| opcion<0);
+			if(opcion==5)
 				menu();
 			lecturaFichero = new LecturaFichero();
 			lecturaFichero.obtener(1,opcion);

@@ -10,6 +10,7 @@ public class Costo {
 	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {
 		int id=0;
 		int profundidad=0;
+		
 		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
 		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
 		

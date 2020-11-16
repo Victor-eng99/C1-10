@@ -2,10 +2,6 @@ package dominio;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
-
 
 /* Nombre: GeneradorNodos
  * Tipo: Clase
@@ -19,18 +15,9 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 		int id=0;
 		int profundidad=0;
 		
-		//Sacamos la posicion donde se encuentra la Fila/Columna del Nodo Objetivo
-		int desde=3,hasta=4;
-		if(",".equals(objetive.substring(3, 4))) {
-			desde=4;hasta=5;
-		}else if(",".equals(objetive.substring(4, 5))){
-			desde=5;hasta=6;
-		}
-		
-		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
 		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(desde, hasta));
-		
+		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
+	
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
@@ -39,7 +26,7 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, 0+heuristica);			
 				    frontera.add(n); 
 				    System.out.println("Insertado nodo " + n.toString());
-					aEstrella(objetive,laberinto,desde,hasta);
+					aEstrella(objetive,laberinto);
 				}
 			}
 		}
@@ -49,14 +36,14 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	 * Tipo: Metodo
 	 * Funcion: Implementacion de algoritmo principal de busqueda por costo uniforme
 	 */
-	public void aEstrella(String objetive, Celda[][] laberinto,int desde,int hasta) {
+	public void aEstrella(String objetive, Celda[][] laberinto) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> nodosVisitados=new ArrayList<Nodo>();
 		boolean solucion=false;
 		int id=0;
 		
 		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(desde, hasta));
+		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
 		
 		while(!solucion && !frontera.isEmpty()) {
 			System.out.println("\n____________________________");

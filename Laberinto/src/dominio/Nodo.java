@@ -99,7 +99,7 @@ public class Nodo implements Comparable<Nodo>{
 	
 	@Override
 	public String toString() {
-		return "["+this.id+"]["+this.costo+",("+this.estado.getFila()+","+this.estado.getColumna()+"),"+this.idPadre+","+this.accion+","+this.profundidad+","+this.heuristica+","+this.valor+"]";
+		return "["+this.id+"]["+this.costo+",("+this.estado.getFila()+", "+this.estado.getColumna()+"),"+this.idPadre+","+this.accion+","+this.profundidad+","+this.heuristica+","+this.valor+"]";
 	}
 
 	@Override

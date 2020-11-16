@@ -51,8 +51,7 @@ public class LectorJSON {
 			if(opcion==0) {
 				Anchura anchura=new Anchura();
 				anchura.nodoInicial(initial, objective, lab);
-			}
-			if(opcion==1) {
+			}if(opcion==1) {
 				AEstrella ae=new AEstrella();
 				ae.nodoInicial(initial, objective, lab);
 			}if(opcion==2) {
@@ -61,6 +60,9 @@ public class LectorJSON {
 			}if(opcion==3) {
 				Profundidad prof=new Profundidad();
 				//prof.nodoInicial(initial, objective, lab);
+			}if(opcion==4) {
+				Voraz voraz=new Voraz();
+				voraz.nodoInicial(initial, objective, lab);
 			}
 		} else {
 			info = new Informacion();
