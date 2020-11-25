@@ -28,20 +28,18 @@ public class Anchura {
 		}
 				
 		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
-		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(desde, hasta));
-
-		
-		int fInicial= Integer.parseInt(initial.substring(1, 2));
-		int cInicial= Integer.parseInt(initial.substring(3, 4));
+		String cadena= objetive.substring(objetive.indexOf("(")+1,objetive.indexOf(")"));
+		String[] s= cadena.split(",");
+		int fObjetivo=Integer.parseInt(s[0]);
+		int cObjetivo= Integer.parseInt(s[1]);
 				
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
-					int heuristica= Math.abs(fInicial - fObjetivo) + Math.abs(cInicial - cObjetivo);
+					int heuristica= Math.abs(laberinto[f][c].getFila() - fObjetivo) + Math.abs(laberinto[f][c].getColumna() - cObjetivo);
 				    Nodo n = new Nodo(id, costo, laberinto[f][c], -1, "-", 0, heuristica, 0);
-					anchura(n,objetive,laberinto,desde,hasta);
+					anchura(n,objetive,laberinto,desde,hasta,fObjetivo,cObjetivo);
 				}
 			}
 		}
@@ -51,7 +49,7 @@ public class Anchura {
 	 * Tipo: Metodo
 	 * Función: Busqueda en anchura a partir del nodo inicial hasta el objetivo
 	 */
-	public void anchura(Nodo padre,String objetive,Celda[][] laberinto,int desde,int hasta) {
+	public void anchura(Nodo padre,String objetive,Celda[][] laberinto,int desde,int hasta,int fObjetivo,int cObjetivo) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> aSolucion=new ArrayList<Nodo>();//ArrayList auxiliar para guardar la solucion y poder mostrarla
 		
@@ -60,10 +58,6 @@ public class Anchura {
 		
 		int id=padre.getId();
 		boolean solucion=false;
-		
-		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
-		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(desde, hasta));
 
 		frontera.add(padre);
 		while(!frontera.isEmpty() && !solucion) {		

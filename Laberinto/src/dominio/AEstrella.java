@@ -2,6 +2,9 @@ package dominio;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 /* Nombre: GeneradorNodos
  * Tipo: Clase
@@ -9,33 +12,25 @@ import java.util.Collections;
  */
 public class AEstrella {
 	
-ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	
 	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {
 		int id=0;
 		int profundidad=0;
 		
-		//Sacamos la posicion donde se encuentra la Fila/Columna del Nodo Objetivo
-		int desde=3,hasta=4;
-		if(",".equals(objetive.substring(3, 4))) {
-			desde=4;hasta=5;
-		}else if(",".equals(objetive.substring(4, 5))){
-			desde=5;hasta=6;
-		}
-						
 		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
-		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(desde, hasta));
-	
+		String cadena= objetive.substring(objetive.indexOf("(")+1,objetive.indexOf(")"));
+		String[] s= cadena.split(",");
+		int fObjetivo=Integer.parseInt(s[0]);
+		int cObjetivo= Integer.parseInt(s[1]);
+		
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
 					int heuristica= Math.abs(laberinto[f][c].getFila() - fObjetivo) + Math.abs(laberinto[f][c].getColumna() - cObjetivo);
-				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, 0+heuristica);			
-				    frontera.add(n); 
+				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, heuristica+0);			
 				    System.out.println("Insertado nodo " + n.toString());
-					aEstrella(objetive,laberinto,desde,hasta);
+					aEstrella(n,objetive,laberinto,fObjetivo,cObjetivo);
 				}
 			}
 		}
@@ -45,20 +40,19 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	 * Tipo: Metodo
 	 * Funcion: Implementacion de algoritmo principal de busqueda por costo uniforme
 	 */
-	public void aEstrella(String objetive, Celda[][] laberinto,int desde,int hasta) {
+	public void aEstrella(Nodo nodo,String objetive, Celda[][] laberinto,int fObjetivo,int cObjetivo) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> nodosVisitados=new ArrayList<Nodo>();
+		
+		Comparator<Nodo> comparador= new OrdenarFrontera();
+		PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>(1000,comparador);
 		boolean solucion=false;
-		int id=0;
+		int id=nodo.getId();
 		
-		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(desde, hasta));
-		
+
+	    frontera.add(nodo); 
 		while(!solucion && !frontera.isEmpty()) {
-			System.out.println("\n____________________________");
-			Nodo padre = frontera.get(0);
-			frontera.remove(0);
-			System.out.println("Sacado nodo " + padre.toString());
+			Nodo padre = frontera.poll();
 			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
 			if(objetive.equals(fc)) {			
 				solucion=true; // Hemos alcanzado el objetivo
@@ -74,79 +68,15 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 							int heuristica= Math.abs(s.getCelda().getFila() - fObjetivo) + Math.abs(s.getCelda().getColumna() - cObjetivo);
 							Nodo n = new Nodo(++id, s.getCostoMov()+padre.getCosto(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, heuristica, s.getCostoMov()+padre.getCosto()+heuristica);
 							frontera.add(n);
-							System.out.println("Insertado nodo " + n.toString());
 						}catch(NullPointerException e) {}
 					}
-				} else {
-					System.out.println("CUT en estado ("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")");
 				}
 				visitados.add(padre.getEstado()); // Nodo expandido = Su estado ha sido visitado
-				nodosVisitados.add(padre);
-				Collections.sort(frontera);
-				System.out.println("\n");
-				segundosCriterios();
-				System.out.println("");
-				System.out.println("\nFrontera:");
-				for(Nodo n:frontera) {
-					System.out.println(n.toString());
-				}
-	
+				nodosVisitados.add(padre);			
 			}
-
 		}
-		
 	}
 	
-	/* Nombre: segundosCriterios
-	 * Tipo: Metodo
-	 * Funcion: Establecer en cabecera de frontera el nodo indicado segun los criterios de seleccion:
-	 * 1º valor, 2º fila, 3º columna
-	 */
-	public void segundosCriterios() {
-		ArrayList<Nodo> valorMinimo = new ArrayList<Nodo>();
-		ArrayList<Nodo> filaMinima = new ArrayList<Nodo>();
-		ArrayList<Integer> columnas = new ArrayList<Integer>();
-		ArrayList<Integer> filas = new ArrayList<Integer>();
-		int valor;
-
-		try {
-			System.out.println("Nodos con minimo valor de frontera:");
-			valor=frontera.get(0).getValor();
-			for(Nodo n:frontera) {
-				if(n.getValor()==valor) {
-					valorMinimo.add(n);
-					filas.add(n.getEstado().getFila());
-					System.out.print(n.toString()+" ");
-				}
-			}
-			
-			int fMin = Collections.min(filas);
-			
-			System.out.println("\n");
-			System.out.println("Nodos con fila minima:");
-			for(Nodo n:valorMinimo) {
-				if(n.getEstado().getFila()==fMin) {				
-					filaMinima.add(n);
-					columnas.add(n.getEstado().getColumna());
-					System.out.print(n.toString()+" ");
-				}
-			}
-			
-			int cMin = Collections.min(columnas);
-			System.out.println("\n");
-			System.out.println("Columna minima: " + cMin);
-			
-			for(Nodo n:filaMinima) {
-				if(n.getEstado().getColumna()==cMin) {
-					System.out.println("\nNodo a cabecera de frontera: " + n.toString());
-					frontera.remove(n);
-					frontera.add(0, n);
-				}
-			}
-			
-		} catch(IndexOutOfBoundsException e) {}
-		
-	}
 	
 	public void mostrarCamino(ArrayList<Nodo> nodosVisitados, Celda[][] laberinto) {
 		ArrayList<Nodo> sol = new ArrayList<Nodo>();

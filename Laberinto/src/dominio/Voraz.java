@@ -15,8 +15,12 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 		int id=0;
 		int profundidad=0;
 		
-		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
+		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
+		String cadena= objetive.substring(objetive.indexOf("(")+1,objetive.indexOf(")"));
+		String[] s= cadena.split(",");
+		int fObjetivo=Integer.parseInt(s[0]);
+		int cObjetivo= Integer.parseInt(s[1]);
+				
 	
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
@@ -26,7 +30,7 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, heuristica);			
 				    frontera.add(n); 
 				    System.out.println("Insertado nodo " + n.toString());
-					voraz(objetive,laberinto);
+					voraz(objetive,laberinto,fObjetivo,cObjetivo);
 				}
 			}
 		}
@@ -36,14 +40,11 @@ ArrayList<Nodo> frontera = new ArrayList<Nodo>();
 	 * Tipo: Metodo
 	 * Funcion: Implementacion de algoritmo principal de busqueda por costo uniforme
 	 */
-	public void voraz(String objetive, Celda[][] laberinto) {
+	public void voraz(String objetive, Celda[][] laberinto,int fObjetivo,int cObjetivo) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> nodosVisitados=new ArrayList<Nodo>();
 		boolean solucion=false;
 		int id=0;
-		
-		int fObjetivo= Integer.parseInt(objetive.substring(1, 2));
-		int cObjetivo= Integer.parseInt(objetive.substring(3, 4));
 		
 		while(!solucion && !frontera.isEmpty()) {
 			System.out.println("\n____________________________");
