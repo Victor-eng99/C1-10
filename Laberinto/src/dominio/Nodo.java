@@ -9,7 +9,7 @@ package dominio;
 public class Nodo implements Comparable<Nodo>{
 	private int id;
 	private Celda estado;
-	private int valor;
+	private double valor;
 	private int costo;
 	private String accion;
 	private int idPadre;
@@ -21,7 +21,7 @@ public class Nodo implements Comparable<Nodo>{
 	 * Tipo: Metodo
 	 * Funcion: Constructor de clase Nodo
 	 */
-	public Nodo(int id, int costo, Celda estado, int idPadre, String accion, int profundidad, int heuristica, int valor) {
+	public Nodo(int id, int costo, Celda estado, int idPadre, String accion, int profundidad, int heuristica, double valor) {
 		this.id = id;
 		this.estado = estado;
 		this.valor = valor;
@@ -49,11 +49,11 @@ public class Nodo implements Comparable<Nodo>{
 		this.estado = estado;
 	}
 
-	public int getValor() {
+	public double getValor() {
 		return valor;
 	}
 
-	public void setValor(int valor) {
+	public void setValor(double valor) {
 		this.valor = valor;
 	}
 

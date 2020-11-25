@@ -1,10 +1,8 @@
 package dominio;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.StringTokenizer;
 
 /* Nombre: GeneradorNodos
  * Tipo: Clase
@@ -29,7 +27,6 @@ public class AEstrella {
 				if(initial.equals(fc)) {
 					int heuristica= Math.abs(laberinto[f][c].getFila() - fObjetivo) + Math.abs(laberinto[f][c].getColumna() - cObjetivo);
 				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, heuristica+0);			
-				    System.out.println("Insertado nodo " + n.toString());
 					aEstrella(n,objetive,laberinto,fObjetivo,cObjetivo);
 				}
 			}
@@ -38,7 +35,7 @@ public class AEstrella {
 	
 	/* Nombre: aEstrella
 	 * Tipo: Metodo
-	 * Funcion: Implementacion de algoritmo principal de busqueda por costo uniforme
+	 * Funcion: Implementacion de algoritmo principal de busqueda A
 	 */
 	public void aEstrella(Nodo nodo,String objetive, Celda[][] laberinto,int fObjetivo,int cObjetivo) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
@@ -46,10 +43,10 @@ public class AEstrella {
 		
 		Comparator<Nodo> comparador= new OrdenarFrontera();
 		PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>(1000,comparador);
+		
 		boolean solucion=false;
 		int id=nodo.getId();
 		
-
 	    frontera.add(nodo); 
 		while(!solucion && !frontera.isEmpty()) {
 			Nodo padre = frontera.poll();

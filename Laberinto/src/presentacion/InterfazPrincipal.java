@@ -67,7 +67,7 @@ public class InterfazPrincipal {
 					System.err.println("Introduzca un valor numérico entre 0 y 3");
 					teclado.next();
 				}
-			}while(opcion>45|| opcion<0);
+			}while(opcion>5|| opcion<0);
 			if(opcion==5)
 				menu();
 			lecturaFichero = new LecturaFichero();

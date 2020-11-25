@@ -59,7 +59,7 @@ public class LectorJSON {
 				costo.nodoInicial(initial, objective, lab);
 			}if(opcion==3) {
 				Profundidad prof=new Profundidad();
-				//prof.nodoInicial(initial, objective, lab);
+				prof.nodoInicial(initial, objective, lab);
 			}if(opcion==4) {
 				Voraz voraz=new Voraz();
 				voraz.nodoInicial(initial, objective, lab);

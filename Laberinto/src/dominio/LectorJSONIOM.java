@@ -6,8 +6,6 @@ import java.util.Scanner;
 
 import org.json.JSONObject;
 
-import presentacion.LecturaFichero;
-
 /* Nombre: LectorJSONIOM
  * Tipo: Clase
  * Funcion: Obtener EI, EO y nombre de archivo JSON que contiene el laberinto
