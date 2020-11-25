@@ -1,10 +1,14 @@
 package dominio;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import presentacion.GeneradorPNG;
+
 public class Profundidad {
+	GeneradorPNG generadorPNG;
 	
 	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {
 		int id=0;
@@ -15,6 +19,8 @@ public class Profundidad {
 		String[] s= cadena.split(",");
 		int fObjetivo=Integer.parseInt(s[0]);
 		int cObjetivo= Integer.parseInt(s[1]);
+		
+		pintarCeldas(laberinto, 0);
 		
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
@@ -46,10 +52,13 @@ public class Profundidad {
 		while(!solucion && !frontera.isEmpty()) {
 			Nodo padre = frontera.poll();
 			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
-			if(objetive.equals(fc)) {			
+			if(objetive.equals(fc)) {	
 				solucion=true; // Hemos alcanzado el objetivo
 				visitados.add(padre.getEstado());
 				nodosVisitados.add(padre);
+				for(Celda c : visitados) {
+					c.setColor(Color.GREEN);
+				}
 				mostrarCamino(nodosVisitados, laberinto);
 			} else {
 				if(!visitados.contains(padre.getEstado())) {
@@ -61,6 +70,7 @@ public class Profundidad {
 							double valor = 1.0/(padre.getProfundidad()+2.0);
 							Nodo n = new Nodo(++id, s.getCostoMov()+padre.getCosto(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, heuristica, valor);
 							frontera.add(n);
+							n.getEstado().setColor(Color.BLUE);
 						}catch(NullPointerException e) {}
 					}
 				}
@@ -75,15 +85,18 @@ public class Profundidad {
 		ArrayList<Nodo> sol = new ArrayList<Nodo>();
 		ArrayList<Nodo> solucion = new ArrayList<Nodo>();
 		Nodo siguiente = nodosVisitados.get(nodosVisitados.size()-1);
+		siguiente.getEstado().setColor(Color.RED);
 		while(siguiente.getIdPadre()!=-1) {
 			for(int v=0; v<nodosVisitados.size(); v++) {
 				if(siguiente.getIdPadre()==nodosVisitados.get(v).getId()) {
 					Nodo padre = nodosVisitados.get(v);
 					sol.add(padre);
+					padre.getEstado().setColor(Color.RED);
 					siguiente = padre;
 				}
 			}
 		}
+		pintarCeldas(laberinto, 1);
 		System.out.println("\nSOLUCIÓN:");
 		System.out.println("[id][cost,state,father_id,action,depth,h,value]");
 		for(int s=sol.size()-1; s>=0; s--) {
@@ -127,6 +140,32 @@ public class Profundidad {
 				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], laberinto[celda.getFila()][celda.getColumna()-1].getValor()+1);
 				celda.setSucesores(3, sucesor);
 			}
+		}
+	}
+	
+	public void pintarCeldas(Celda[][] laberinto, int token) {
+		generadorPNG = new GeneradorPNG();
+		
+		if(token==0) { // token = 0 -> Inicial
+			for(int i=0; i<laberinto.length; i++) {
+				for(int j=0; j<laberinto[0].length; j++) {
+					if(laberinto[i][j].getValor()==0) {
+						laberinto[i][j].setColor(Color.WHITE);
+					}if(laberinto[i][j].getValor()==1) {
+						Color cGris=new Color(241,231,186);
+						laberinto[i][j].setColor(cGris);
+					}if(laberinto[i][j].getValor()==2) {
+						Color cVerde=new Color(147,235,145);
+						laberinto[i][j].setColor(cVerde);
+					}if(laberinto[i][j].getValor()==3) {
+						Color cAzul=new Color(186,224,241);
+						laberinto[i][j].setColor(cAzul);
+					}
+				}
+			}
+			generadorPNG.generar(laberinto, "puzzle_loop_"+laberinto.length+"x"+laberinto[0].length+"_20.png");
+		} else {
+			generadorPNG.generar(laberinto, "solution_"+laberinto.length+"x"+laberinto[0].length+"_DEPTH_20.png");
 		}
 	}
 }

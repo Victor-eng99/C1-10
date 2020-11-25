@@ -29,8 +29,8 @@ public class GeneradorPNG {
 	 * Tipo: Metodo
 	 * Funcion: Creacion y pintado de archivo PNG (similar a GeneradorFrame)
 	 */
-	public void generar(Celda[][] laberinto) {
-        BufferedImage bufferedImage = new BufferedImage(laberinto[0].length * Celda.TAMANO+10, laberinto.length * Celda.TAMANO+30, BufferedImage.TYPE_INT_RGB);
+	public void generar(Celda[][] laberinto, String nombre) {
+        BufferedImage bufferedImage = new BufferedImage(laberinto[0].length * Celda.TAMANO+1, laberinto.length * Celda.TAMANO+1, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = bufferedImage.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(Color.BLACK);
@@ -44,19 +44,8 @@ public class GeneradorPNG {
 				g2.setColor(Color.WHITE);
 				g2.fillRect(x, y, Celda.TAMANO, Celda.TAMANO); // Rellena un recangulo con las medidas de la clase Celda
 				
-				//Pintamos cada casilla dependiendo del valor del nodo
-				if(laberinto[i][j].getValor()==0) {
-					g2.setColor(Color.WHITE);
-				}if(laberinto[i][j].getValor()==1) {
-					Color cGris=new Color(241,231,186);
-					g2.setColor(cGris);
-				}if(laberinto[i][j].getValor()==2) {
-					Color cVerde=new Color(147,235,145);
-					g2.setColor(cVerde);
-				}if(laberinto[i][j].getValor()==3) {
-					Color cAzul=new Color(186,224,241);
-					g2.setColor(cAzul);
-				}
+				g2.setColor(laberinto[i][j].getColor()); // Pintamos cada celda del color que corresponda
+				
 				g2.fillRect (x, y,  Celda.TAMANO,  Celda.TAMANO);
 				
 				g2.setColor(Color.BLACK);
@@ -78,7 +67,7 @@ public class GeneradorPNG {
         g2.dispose();
         
         try {
-            ImageIO.write(bufferedImage, "png", new File("laberinto_"+laberinto.length+"x"+laberinto[0].length+".png"));
+            ImageIO.write(bufferedImage, "png", new File(nombre));
         } catch (IOException ex) {
            
         }

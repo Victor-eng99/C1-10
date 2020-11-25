@@ -8,7 +8,7 @@ import org.json.*;
 
 /* Nombre: GeneradorJSON
  * Tipo: Clase
- * Funcion: CLase encargada de crer un archivo JSON a partir de un objeto que albergue características del laberinto
+ * Funcion: Clase encargada de crer un archivo JSON a partir de un objeto que albergue características del laberinto
  */
 public class GeneradorJSON {
 	LectorJSON lectorJSON;

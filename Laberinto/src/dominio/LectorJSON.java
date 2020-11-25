@@ -35,7 +35,7 @@ public class LectorJSON {
 		boolean correcto=comprobarValidez(lab);
 		
 		if(correcto) {
-			generadorPNG.generar(lab); // Enviamos el array a la clase encargadada de crear el archivo PNG
+			generadorPNG.generar(lab, "laberinto_"+lab.length+"x"+lab[0].length+".png"); // Enviamos el array a la clase encargadada de crear el archivo PNG
 		} else {
 			info = new Informacion();
 			info.errorJSON();
