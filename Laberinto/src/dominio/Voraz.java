@@ -169,7 +169,7 @@ public class Voraz {
 			}
 			generadorPNG.generar(laberinto, "puzzle_loop_"+laberinto.length+"x"+laberinto[0].length+"_20.png");
 		} else {
-			generadorPNG.generar(laberinto, "solution_"+laberinto.length+"x"+laberinto[0].length+"_A_20.png");
+			generadorPNG.generar(laberinto, "solution_"+laberinto.length+"x"+laberinto[0].length+"_GREEDY_20.png");
 		}
 	}
 
