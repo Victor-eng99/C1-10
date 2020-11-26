@@ -14,7 +14,7 @@ public class InterfazPrincipal {
 	public static void main(String[] args) throws IOException {
 		
 		System.out.println("\033[34mGENERADOR DE LABERINTOS");
-		
+
 		while(true) {
 			menu();
 		}
@@ -27,8 +27,8 @@ public class InterfazPrincipal {
 			System.out.println("\n\033[34mMenu:\u001B[0m");
 			System.out.println("1. Generar laberinto a partir de parámetros. ");
 			System.out.println("2. Leer fichero JSON y generar laberinto. ");
-			System.out.println("3. Leer fichero JSON y elegir tipo de Busqueda ");
-			System.out.println("0. Salir");
+			System.out.println("3. Leer fichero JSON y elegir tipo de Busqueda. ");
+			System.out.println("0. Salir. ");
 			System.out.println("\n\u001B[36mSeleccione una opción: \u001B[0m");
 			try {
 				opcion = teclado.nextInt();

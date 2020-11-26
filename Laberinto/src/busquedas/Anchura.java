@@ -1,23 +1,32 @@
-package dominio;
+package busquedas;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import dominio.Celda;
+import dominio.GeneradorTXT;
+import dominio.Nodo;
+import dominio.Sucesor;
 import presentacion.GeneradorPNG;
+
 
 /* Nombre: GeneradorNodos
  * Tipo: Clase
  * Funcion: Clase encargada de generar nodos aleatorios y añadirlos a la frontera
  */
-public class Voraz {
+public class Anchura {
 	GeneradorPNG generadorPNG;
 	
-	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {
+	/* Nombre: NodoInicial
+	 * Tipo: Metodo
+	 * Funcion: Encontrar el nodo inicial y comenzar la busqueda
+	 */
+	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {	
 		int id=0;
-		int profundidad=0;
-		
+		int costo=0;
+				
 		//Sacamos los valores de la fila/columna del objetivo para obtener la heuristica de Manhattan
 		String cadena= objetive.substring(objetive.indexOf("(")+1,objetive.indexOf(")"));
 		String[] s= cadena.split(",");
@@ -25,66 +34,64 @@ public class Voraz {
 		int cObjetivo= Integer.parseInt(s[1]);
 		
 		pintarCeldas(laberinto, 0);
-	
+				
 		for(int f=0; f<laberinto.length; f++) {
 			for(int c=0; c<laberinto[0].length; c++) {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
 					int heuristica= Math.abs(laberinto[f][c].getFila() - fObjetivo) + Math.abs(laberinto[f][c].getColumna() - cObjetivo);
-				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, heuristica);			
-					voraz(n,objetive,laberinto,fObjetivo,cObjetivo);
+				    Nodo n = new Nodo(id, costo, laberinto[f][c], -1, "-", 0, heuristica, 0);
+					anchura(n,objetive,laberinto,fObjetivo,cObjetivo);
 				}
 			}
 		}
 	}
 	
-	/* Nombre: voraz
+	/* Nombre: anchura
 	 * Tipo: Metodo
-	 * Funcion: Implementacion de algoritmo principal de busqueda voraz
+	 * Función: Busqueda en anchura a partir del nodo inicial hasta el objetivo
 	 */
-	public void voraz(Nodo nodo, String objetive, Celda[][] laberinto,int fObjetivo,int cObjetivo) {
+	public void anchura(Nodo padre,String objetive,Celda[][] laberinto,int fObjetivo,int cObjetivo) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
-		ArrayList<Nodo> nodosVisitados=new ArrayList<Nodo>();
+		ArrayList<Nodo> aSolucion=new ArrayList<Nodo>();//ArrayList auxiliar para guardar la solucion y poder mostrarla
 		
 		Comparator<Nodo> comparador= new OrdenarFrontera();
 		PriorityQueue<Nodo> frontera = new PriorityQueue<Nodo>(1000,comparador);
 		
+		int id=padre.getId();
 		boolean solucion=false;
-		int id=0;
-		
-		frontera.add(nodo);
-		while(!solucion && !frontera.isEmpty()) {
-			Nodo padre = frontera.poll();
-			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
-			if(objetive.equals(fc)) {			
-				solucion=true; // Hemos alcanzado el objetivo
-				visitados.add(padre.getEstado());
-				nodosVisitados.add(padre);
+
+		frontera.add(padre);
+		while(!frontera.isEmpty() && !solucion) {		
+			Nodo nodo= frontera.poll();
+					
+			//Comprobamos si hemos llegado al objetivo 
+			String fc="("+nodo.getEstado().getFila()+","+nodo.getEstado().getColumna()+")";
+			if(objetive.equals(fc)) {
+				visitados.add(nodo.getEstado());
+				aSolucion.add(nodo);
+				solucion=true;
 				for(Celda c : visitados) {
 					c.setColor(Color.GREEN);
 				}
-				mostrarCamino(nodosVisitados, laberinto);
-			} else {
-				if(!visitados.contains(padre.getEstado())) {
-					funcionSucesores(padre.getEstado(), laberinto);
-					for(int i=0; i<padre.getEstado().getSucesores().length; i++) {
-						try {
-							Sucesor s=padre.getEstado().getSucesor(i);
-							int heuristica= Math.abs(s.getCelda().getFila() - fObjetivo) + Math.abs(s.getCelda().getColumna() - cObjetivo);
-							Nodo n = new Nodo(++id, s.getCostoMov()+padre.getCosto(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, heuristica, heuristica);
-							frontera.add(n);
-							n.getEstado().setColor(Color.BLUE);
-						}catch(NullPointerException e) {}
-					}
-				}
-				visitados.add(padre.getEstado()); // Nodo expandido = Su estado ha sido visitado
-				nodosVisitados.add(padre);
-			}
-
+				mostrarCamino(aSolucion, laberinto);
+			}else if(!visitados.contains(nodo.getEstado()) && nodo.getProfundidad()<1000000){
+					aSolucion.add(nodo);
+					visitados.add(nodo.getEstado());
+					funcionSucesores(nodo.getEstado(), laberinto);
+				for(int i=0;i<nodo.getEstado().getSucesores().length;i++) {
+					try {
+						Sucesor s1=nodo.getEstado().getSucesor(i);
+						int heuristica= Math.abs(s1.getCelda().getFila() - fObjetivo) + Math.abs(s1.getCelda().getColumna() - cObjetivo);
+						Nodo n = new Nodo(++id,nodo.getCosto()+s1.getCelda().getValor()+1, s1.getCelda(), nodo.getId(), s1.getMov(), nodo.getProfundidad()+1, heuristica, s1.getCostoMov()+nodo.getValor());			
+						frontera.add(n);
+						n.getEstado().setColor(Color.BLUE);
+					}catch(NullPointerException e) {}
+				}		
+			}		
 		}
-
 	}
-	
+
 	public void mostrarCamino(ArrayList<Nodo> nodosVisitados, Celda[][] laberinto) {
 		ArrayList<Nodo> sol = new ArrayList<Nodo>();
 		ArrayList<Nodo> solucion = new ArrayList<Nodo>();
@@ -119,7 +126,7 @@ public class Voraz {
 	public void mostrarSolucion(ArrayList<Nodo> aSolucion, Celda[][] laberinto) {	
 		System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
 		GeneradorTXT gt=new GeneradorTXT();
-		gt.generarTXT(laberinto,"GREEDY",aSolucion);
+		gt.generarTXT(laberinto,"BREADTH",aSolucion);
 	}
 	
 	/* Nombre: funcionSucesores
@@ -129,19 +136,19 @@ public class Voraz {
 	public void funcionSucesores(Celda celda, Celda[][] laberinto) {
 		for(int m=0; m<celda.getMuros().length; m++) {
 			if(celda.getMuro(m)==true && m==0) {
-				Sucesor sucesor = new Sucesor("N",laberinto[celda.getFila()-1][celda.getColumna()], laberinto[celda.getFila()-1][celda.getColumna()].getValor()+1);
+				Sucesor sucesor = new Sucesor("N",laberinto[celda.getFila()-1][celda.getColumna()], 1);
 				celda.setSucesores(0, sucesor);
 			}
 			if(celda.getMuro(m)==true && m==1) {
-				Sucesor sucesor = new Sucesor("E",laberinto[celda.getFila()][celda.getColumna()+1], laberinto[celda.getFila()][celda.getColumna()+1].getValor()+1);
+				Sucesor sucesor = new Sucesor("E",laberinto[celda.getFila()][celda.getColumna()+1], 1);
 				celda.setSucesores(1, sucesor);
 			}
 			if(celda.getMuro(m)==true && m==2) {
-				Sucesor sucesor = new Sucesor("S",laberinto[celda.getFila()+1][celda.getColumna()], laberinto[celda.getFila()+1][celda.getColumna()].getValor()+1);
+				Sucesor sucesor = new Sucesor("S",laberinto[celda.getFila()+1][celda.getColumna()], 1);
 				celda.setSucesores(2, sucesor);
 			}
 			if(celda.getMuro(m)==true && m==3) {
-				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], laberinto[celda.getFila()][celda.getColumna()-1].getValor()+1);
+				Sucesor sucesor = new Sucesor("O",laberinto[celda.getFila()][celda.getColumna()-1], 1);
 				celda.setSucesores(3, sucesor);
 			}
 		}
@@ -169,10 +176,8 @@ public class Voraz {
 			}
 			generadorPNG.generar(laberinto, "puzzle_loop_"+laberinto.length+"x"+laberinto[0].length+"_20.png");
 		} else {
-			generadorPNG.generar(laberinto, "solution_"+laberinto.length+"x"+laberinto[0].length+"_GREEDY_20.png");
+			generadorPNG.generar(laberinto, "solution_"+laberinto.length+"x"+laberinto[0].length+"_BREATH_20.png");
 		}
 	}
 
-
 }
-

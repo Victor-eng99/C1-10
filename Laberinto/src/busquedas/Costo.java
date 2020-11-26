@@ -1,10 +1,14 @@
-package dominio;
+package busquedas;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import dominio.Celda;
+import dominio.GeneradorTXT;
+import dominio.Nodo;
+import dominio.Sucesor;
 import presentacion.GeneradorPNG;
 
 public class Costo {

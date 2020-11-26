@@ -1,17 +1,17 @@
-package dominio;
+package busquedas;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import dominio.Celda;
+import dominio.GeneradorTXT;
+import dominio.Nodo;
+import dominio.Sucesor;
 import presentacion.GeneradorPNG;
 
-/* Nombre: GeneradorNodos
- * Tipo: Clase
- * Funcion: Clase encargada de generar nodos aleatorios y añadirlos a la frontera
- */
-public class AEstrella {
+public class Profundidad {
 	GeneradorPNG generadorPNG;
 	
 	public void nodoInicial(String initial, String objetive, Celda[][] laberinto) {
@@ -31,18 +31,18 @@ public class AEstrella {
 				String fc="("+laberinto[f][c].getFila()+","+laberinto[f][c].getColumna()+")";
 				if(initial.equals(fc)) {
 					int heuristica= Math.abs(laberinto[f][c].getFila() - fObjetivo) + Math.abs(laberinto[f][c].getColumna() - cObjetivo);
-				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, heuristica+0);			
-					aEstrella(n,objetive,laberinto,fObjetivo,cObjetivo);
+				    Nodo n = new Nodo(id, 0, laberinto[f][c], -1, "-", profundidad, heuristica, 1.0);			
+					profundidad(n,objetive,laberinto,fObjetivo,cObjetivo);
 				}
 			}
 		}
 	}
 	
-	/* Nombre: aEstrella
+	/* Nombre: profundidad
 	 * Tipo: Metodo
-	 * Funcion: Implementacion de algoritmo principal de busqueda A
+	 * Funcion: Implementacion de algoritmo principal de busqueda en profundidad
 	 */
-	public void aEstrella(Nodo nodo,String objetive, Celda[][] laberinto,int fObjetivo,int cObjetivo) {
+	public void profundidad(Nodo nodo,String objetive, Celda[][] laberinto,int fObjetivo,int cObjetivo) {
 		ArrayList<Celda> visitados=new ArrayList<Celda>();
 		ArrayList<Nodo> nodosVisitados=new ArrayList<Nodo>();
 		
@@ -52,11 +52,11 @@ public class AEstrella {
 		boolean solucion=false;
 		int id=nodo.getId();
 		
-	    frontera.add(nodo); 
+		frontera.add(nodo); 
 		while(!solucion && !frontera.isEmpty()) {
 			Nodo padre = frontera.poll();
 			String fc="("+padre.getEstado().getFila()+","+padre.getEstado().getColumna()+")";
-			if(objetive.equals(fc)) {			
+			if(objetive.equals(fc)) {	
 				solucion=true; // Hemos alcanzado el objetivo
 				visitados.add(padre.getEstado());
 				nodosVisitados.add(padre);
@@ -71,7 +71,8 @@ public class AEstrella {
 						try {
 							Sucesor s=padre.getEstado().getSucesor(i);
 							int heuristica= Math.abs(s.getCelda().getFila() - fObjetivo) + Math.abs(s.getCelda().getColumna() - cObjetivo);
-							Nodo n = new Nodo(++id, s.getCostoMov()+padre.getCosto(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, heuristica, s.getCostoMov()+padre.getCosto()+heuristica);
+							double valor = 1.0/(padre.getProfundidad()+2.0);
+							Nodo n = new Nodo(++id, s.getCostoMov()+padre.getCosto(), s.getCelda(), padre.getId(), s.getMov(), padre.getProfundidad()+1, heuristica, valor);
 							frontera.add(n);
 							n.getEstado().setColor(Color.BLUE);
 						}catch(NullPointerException e) {}
@@ -81,8 +82,8 @@ public class AEstrella {
 				nodosVisitados.add(padre);			
 			}
 		}
+		
 	}
-	
 	
 	public void mostrarCamino(ArrayList<Nodo> nodosVisitados, Celda[][] laberinto) {
 		ArrayList<Nodo> sol = new ArrayList<Nodo>();
@@ -118,7 +119,7 @@ public class AEstrella {
 	public void mostrarSolucion(ArrayList<Nodo> aSolucion, Celda[][] laberinto) {	
 		System.out.println("\n\u001B[32mSe ha alcanzado el nodo objetivo");
 		GeneradorTXT gt=new GeneradorTXT();
-		gt.generarTXT(laberinto,"A",aSolucion);
+		gt.generarTXT(laberinto,"DEPTH",aSolucion);
 	}
 	
 	/* Nombre: funcionSucesores
@@ -168,9 +169,7 @@ public class AEstrella {
 			}
 			generadorPNG.generar(laberinto, "puzzle_loop_"+laberinto.length+"x"+laberinto[0].length+"_20.png");
 		} else {
-			generadorPNG.generar(laberinto, "solution_"+laberinto.length+"x"+laberinto[0].length+"_A_20.png");
+			generadorPNG.generar(laberinto, "solution_"+laberinto.length+"x"+laberinto[0].length+"_DEPTH_20.png");
 		}
 	}
-
-
 }

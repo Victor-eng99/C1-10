@@ -3,6 +3,11 @@ package dominio;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import busquedas.AEstrella;
+import busquedas.Anchura;
+import busquedas.Costo;
+import busquedas.Profundidad;
+import busquedas.Voraz;
 import presentacion.GeneradorPNG;
 import presentacion.Informacion;
 

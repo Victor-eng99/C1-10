@@ -1,6 +1,8 @@
-package dominio;
+package busquedas;
 
 import java.util.Comparator;
+
+import dominio.Nodo;
 
 public class OrdenarFrontera implements Comparator<Nodo> {
 
